@@ -72,6 +72,10 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
         
     }
     
+    deinit {
+        debugPrint("deinit...DetailViewController")
+    }
+    
     // Dismiss View upon Swipe
     @objc func respondToSwipeGesture() {
         hero_dismissViewController()

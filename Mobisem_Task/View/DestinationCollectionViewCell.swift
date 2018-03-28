@@ -17,6 +17,10 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var whiteView: UIView!
     @IBOutlet weak var checkInButton: UIView!
+    var checkInLabel = UILabel()
+    var commentTimeLabel = UILabel()
+    var commentDateLabel = UILabel()
+    var shareTextLabel = UILabel()
     
     @IBOutlet weak var titleLabelView: UILabel!
     @IBOutlet weak var priceLabelView: UILabel!
@@ -37,11 +41,51 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     var iconInstagram = UIImageView()
     var iconTumblr = UIImageView()
     var iconGoogle = UIImageView()
+
+//    private func commonInit(){
+//        self.prepareViewComponent()
+//    }
     
-    var destination: Destination! {
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//        debugPrint("initwithframe")
+//        self.commonInit()
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        debugPrint("initwithCoder")
+//        self.commonInit()
+//    }
+    
+    private func prepareViewComponent(){
+        checkInButton?.addSubview(checkInLabel)
+        whiteView?.addSubview(circleProfileImage)
+        whiteView?.addSubview(profileNameLabel)
+        whiteView?.addSubview(sideTextLabel)
+        whiteView?.addSubview(commentTimeLabel)
+        whiteView?.addSubview(commentDateLabel)
+        whiteView?.addSubview(headlineLabel)
+        whiteView?.addSubview(subtitleLabel)
+        whiteView?.addSubview(wholeTextLabel)
+        whiteView?.addSubview(reviewImageView)
+        whiteView?.addSubview(shareTextLabel)
+        whiteView?.addSubview(iconFacebook)
+        whiteView?.addSubview(iconTwitter)
+        whiteView?.addSubview(iconInstagram)
+        whiteView?.addSubview(iconTumblr)
+        whiteView?.addSubview(iconGoogle)
+    }
+    
+
+    var destination: Destination? {
         
         // MARK - Layer Attributes and Assignments
         didSet {
+            
+            
+            prepareViewComponent()
+            
             // MARK - Rounded Corners
             cellImage.layer.cornerRadius = 5
             whiteView.layer.cornerRadius = 5
@@ -79,9 +123,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             checkInButton.layer.borderColor = UIColor.white.cgColor
             
             // MARK - Add Label on the Check-In Button
-            let checkInLabel = UILabel()
             checkInLabel.translatesAutoresizingMaskIntoConstraints = false
-            checkInButton.addSubview(checkInLabel)
             checkInLabel.textColor = UIColor.white
             checkInLabel.centerXAnchor.constraint(equalTo: checkInButton.centerXAnchor).isActive = true
             checkInLabel.centerYAnchor.constraint(equalTo: checkInButton.centerYAnchor).isActive = true
@@ -90,17 +132,15 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             
             // MARK - Add Views on the Bottom Container
                 // Circular Profile Image
-            whiteView.addSubview(circleProfileImage)
             circleProfileImage.translatesAutoresizingMaskIntoConstraints = false
             circleProfileImage.clipsToBounds = true
             circleProfileImage.layer.cornerRadius = 20
-            circleProfileImage.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 15).isActive = true
-            circleProfileImage.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
+            circleProfileImage.topAnchor.constraint(equalTo: self.whiteContainerView.topAnchor, constant: 15).isActive = true
+            circleProfileImage.leftAnchor.constraint(equalTo: self.whiteView.leftAnchor, constant: 15).isActive = true
             circleProfileImage.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
             circleProfileImage.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
             
                 // Profile Name
-            whiteView.addSubview(profileNameLabel)
             profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
             profileNameLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
             profileNameLabel.textColor = UIColor.black
@@ -108,7 +148,6 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             profileNameLabel.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 15).isActive = true
             
                 // Side Text
-            whiteView.addSubview(sideTextLabel)
             sideTextLabel.translatesAutoresizingMaskIntoConstraints = false
             sideTextLabel.font = UIFont.systemFont(ofSize: 12.0)
             sideTextLabel.textColor = UIColor.gray
@@ -117,16 +156,12 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             sideTextLabel.text = "shared a comment."
             
                 // Date and Time Text (This is just a string)
-            let commentTimeLabel = UILabel()
-            whiteView.addSubview(commentTimeLabel)
             commentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
             commentTimeLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
             commentTimeLabel.leftAnchor.constraint(equalTo: circleProfileImage.rightAnchor, constant: 15).isActive = true
             commentTimeLabel.topAnchor.constraint(equalTo: profileNameLabel.bottomAnchor, constant: 5).isActive = true
             commentTimeLabel.text = "07:00"
             
-            let commentDateLabel = UILabel()
-            whiteView.addSubview(commentDateLabel)
             commentDateLabel.translatesAutoresizingMaskIntoConstraints = false
             commentDateLabel.font = UIFont.systemFont(ofSize: 12.0)
             commentDateLabel.textColor = UIColor.gray
@@ -135,14 +170,12 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             commentDateLabel.text = "am  MARCH 26, 2018"
             
                 // Headline Text
-            whiteView.addSubview(headlineLabel)
             headlineLabel.translatesAutoresizingMaskIntoConstraints = false
             headlineLabel.font = UIFont.boldSystemFont(ofSize: 19.0)
             headlineLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
             headlineLabel.topAnchor.constraint(equalTo: circleProfileImage.bottomAnchor, constant: 20).isActive = true
             
                 // Subtitle Text
-            whiteView.addSubview(subtitleLabel)
             subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
             subtitleLabel.font = UIFont.italicSystemFont(ofSize: 14.0)
             subtitleLabel.textColor = UIColor.darkGray
@@ -150,31 +183,35 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             subtitleLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 7).isActive = true
             
                 // Whole Text Label
-            whiteView.addSubview(wholeTextLabel)
             wholeTextLabel.translatesAutoresizingMaskIntoConstraints = false
             wholeTextLabel.font = UIFont.systemFont(ofSize: 14.0)
             wholeTextLabel.textColor = UIColor.gray
             wholeTextLabel.lineBreakMode = .byWordWrapping
             wholeTextLabel.numberOfLines = 0
-            wholeTextLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-            wholeTextLabel.rightAnchor.constraint(equalTo: whiteView.rightAnchor, constant: 10).isActive = true
-            wholeTextLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 15).isActive = true
+            
+            wholeTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15, right: whiteView.rightAnchor, rightConstant: 10, top: subtitleLabel.bottomAnchor, topConstant: 15)
+            
+//            wholeTextLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
+//            wholeTextLabel.rightAnchor.constraint(equalTo: whiteView.rightAnchor, constant: 10).isActive = true
+//            wholeTextLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 15).isActive = true
             
                 // Review Image View
-            whiteView.addSubview(reviewImageView)
             reviewImageView.clipsToBounds = true
-            reviewImageView.translatesAutoresizingMaskIntoConstraints = false
-            reviewImageView.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-            reviewImageView.rightAnchor.constraint(equalTo: whiteView.rightAnchor, constant: 15).isActive = true
-            reviewImageView.topAnchor.constraint(equalTo: wholeTextLabel.bottomAnchor, constant: 20).isActive = true
-            reviewImageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor, multiplier: 1, constant: -30).isActive = true
+//            reviewImageView.translatesAutoresizingMaskIntoConstraints = false
+//            reviewImageView.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
+//            reviewImageView.rightAnchor.constraint(equalTo: whiteView.rightAnchor, constant: 15).isActive = true
+//            reviewImageView.topAnchor.constraint(equalTo: wholeTextLabel.bottomAnchor, constant: 20).isActive = true
+//            reviewImageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor, multiplier: 1, constant: -30).isActive = true
             reviewImageView.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
             reviewImageView.contentMode = .scaleAspectFill
             
+            reviewImageView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15, right: whiteView.rightAnchor, rightConstant: 15, top: wholeTextLabel.bottomAnchor, topConstant: 20, width: whiteView.widthAnchor, widthMultiplier: 1, widthConstant: -30)
+            
+            
+   
+            
                 // Share & Social Media Icons
                     // Share
-            let shareTextLabel = UILabel()
-            whiteView.addSubview(shareTextLabel)
             shareTextLabel.translatesAutoresizingMaskIntoConstraints = false
             shareTextLabel.font = UIFont.italicSystemFont(ofSize: 12.0)
             shareTextLabel.textColor = UIColor.gray
@@ -183,7 +220,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             shareTextLabel.text = "Share".uppercased()
             
                     // Icon - Facebook
-            whiteView.addSubview(iconFacebook)
+            
             iconFacebook.translatesAutoresizingMaskIntoConstraints = false
             iconFacebook.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
             iconFacebook.leftAnchor.constraint(equalTo: shareTextLabel.rightAnchor, constant: 95).isActive = true
@@ -192,7 +229,6 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             iconFacebook.image = UIImage(named:"icn-facebook")
             
                     // Icon - Twitter
-            whiteView.addSubview(iconTwitter)
             iconTwitter.translatesAutoresizingMaskIntoConstraints = false
             iconTwitter.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
             iconTwitter.leftAnchor.constraint(equalTo: iconFacebook.rightAnchor, constant: 5).isActive = true
@@ -201,7 +237,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             iconTwitter.image = UIImage(named:"icn-twitter")
             
                     // Icon - Instagram
-            whiteView.addSubview(iconInstagram)
+            
             iconInstagram.translatesAutoresizingMaskIntoConstraints = false
             iconInstagram.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
             iconInstagram.leftAnchor.constraint(equalTo: iconTwitter.rightAnchor, constant: 5).isActive = true
@@ -210,7 +246,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             iconInstagram.image = UIImage(named:"icn-instagram")
             
                     // Icon - Tumblr
-            whiteView.addSubview(iconTumblr)
+            
             iconTumblr.translatesAutoresizingMaskIntoConstraints = false
             iconTumblr.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
             iconTumblr.leftAnchor.constraint(equalTo: iconInstagram.rightAnchor, constant: 5).isActive = true
@@ -219,7 +255,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             iconTumblr.image = UIImage(named:"icn-tumblr")
             
                     // Icon - Google
-            whiteView.addSubview(iconGoogle)
+
             iconGoogle.translatesAutoresizingMaskIntoConstraints = false
             iconGoogle.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
             iconGoogle.leftAnchor.constraint(equalTo: iconTumblr.rightAnchor, constant: 5).isActive = true
@@ -234,18 +270,58 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
 
     // MARK - Update UI elements with the correct data
     func updateUI() {
-        cellImage?.image = destination.featuredImage!
-        titleLabelView.text = destination.title.uppercased()
-        priceLabelView.text = destination.price.uppercased()
-        descriptionLabelView.text = destination.description
-        dateLabelView.text = destination.date
+        cellImage?.image = destination!.featuredImage!
+        titleLabelView.text = destination!.title.uppercased()
+        priceLabelView.text = destination!.price.uppercased()
+        descriptionLabelView.text = destination!.description
+        dateLabelView.text = destination!.date
         
-        circleProfileImage.image = destination.profileImage
-        profileNameLabel.text = destination.profileName
-        headlineLabel.text = destination.headline
-        subtitleLabel.text = destination.subtitle
-        wholeTextLabel.text = destination.wholeText
-        reviewImageView.image = destination.reviewImage
+        circleProfileImage.image = destination!.profileImage
+        profileNameLabel.text = destination!.profileName
+        headlineLabel.text = destination!.headline
+        subtitleLabel.text = destination!.subtitle
+        wholeTextLabel.text = destination!.wholeText
+        reviewImageView.image = destination!.reviewImage
+    }
+    
+}
+
+// CONSTRAINTS
+
+extension UIView {
+    
+    func arrangeConstraints(_ left: NSLayoutXAxisAnchor?=nil, leftConstant: CGFloat?=nil,
+                        right: NSLayoutXAxisAnchor?=nil, rightConstant: CGFloat?=nil,
+                        top: NSLayoutYAxisAnchor?=nil, topConstant: CGFloat?=nil,
+                        bottom: NSLayoutYAxisAnchor?=nil, bottomConstant: CGFloat?=nil,
+                        width: NSLayoutDimension?=nil, widthMultiplier: CGFloat?=nil, widthConstant: CGFloat?=nil,
+                        height: NSLayoutDimension?=nil, heightMultiplier: CGFloat?=nil, heightConstant: CGFloat?=nil) {
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let left = left, let leftConstant = leftConstant {
+            self.leftAnchor.constraint(equalTo: left, constant: leftConstant).isActive = true
+        }
+        
+        if let right = right, let rightConstant = rightConstant {
+            self.rightAnchor.constraint(equalTo: right, constant: rightConstant).isActive = true
+        }
+        
+        if let top = top, let topConstant = topConstant {
+            self.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
+        }
+        
+        if let bottom = bottom, let bottomConstant = bottomConstant {
+            self.bottomAnchor.constraint(equalTo: bottom, constant: bottomConstant).isActive = true
+        }
+        
+        if let width = width, let widthConstant = widthConstant, let widthMultiplier = widthMultiplier {
+            self.widthAnchor.constraint(equalTo: width, multiplier: widthMultiplier, constant: widthConstant).isActive = true
+        }
+        
+        if let height = height, let heightConstant = heightConstant, let heightMultiplier = heightMultiplier {
+            self.heightAnchor.constraint(equalTo: height, multiplier: heightMultiplier, constant: heightConstant).isActive = true
+        }
     }
     
 }
@@ -265,4 +341,22 @@ extension UILabel {
         label.textDropShadow()
         return label
     }
+}
+
+
+class CircularImageView: UIImageView {
+    
+    init() {
+        super.init(image: nil)
+        debugPrint("CircularImageView...init")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        debugPrint("CircularImageView...deinit")
+    }
+    
 }
