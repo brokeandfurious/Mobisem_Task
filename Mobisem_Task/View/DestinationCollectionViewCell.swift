@@ -42,6 +42,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     var iconTumblr = UIImageView()
     var iconGoogle = UIImageView()
     
+    // Add subviews on the page
     private func prepareViewComponent(){
         checkInButton?.addSubview(checkInLabel)
         whiteView?.addSubview(circleProfileImage)
@@ -61,6 +62,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         whiteView?.addSubview(iconGoogle)
     }
     
+    // MARK - Set shadows for views
     private func setShadows() {
         // MARK - Rounded Corners
         cellImage.layer.cornerRadius = 5
@@ -101,6 +103,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         checkInButton.layer.borderColor = UIColor.white.cgColor
     }
     
+    // MARK - Set constraints for all views
     private func setConstraints() {
         
         // MARK - Add Label on the Check-In Button
@@ -238,7 +241,6 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     
     var destination: Destination? {
         
-        // MARK - Layer Attributes and Assignments
         willSet {
             setShadows()
         }
@@ -253,8 +255,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     
 }
 
-// CONSTRAINTS
-
+// Function for constraints
 extension UIView {
     
     func arrangeConstraints(_ left: NSLayoutXAxisAnchor?=nil, leftConstant: CGFloat?=nil,
@@ -263,8 +264,7 @@ extension UIView {
                         bottom: NSLayoutYAxisAnchor?=nil, bottomConstant: CGFloat?=nil,
                         width: NSLayoutDimension?=nil, widthMultiplier: CGFloat?=nil, widthConstant: CGFloat?=nil, wEqualToConstant: CGFloat?=nil,
                         height: NSLayoutDimension?=nil, heightMultiplier: CGFloat?=nil, heightConstant: CGFloat?=nil, hEqualToConstant: CGFloat?=nil,
-                        centerX: NSLayoutXAxisAnchor?=nil, centerXConstant: CGFloat?=nil,
-                        centerY: NSLayoutYAxisAnchor?=nil, centerYConstant: CGFloat?=nil) {
+                        centerX: NSLayoutXAxisAnchor?=nil, centerY: NSLayoutYAxisAnchor?=nil) {
         
         self.translatesAutoresizingMaskIntoConstraints = false
         
@@ -300,12 +300,12 @@ extension UIView {
             self.heightAnchor.constraint(equalToConstant: hEqualToConstant).isActive = true
         }
         
-        if let centerX = centerX, let centerXConstant = centerXConstant {
-            self.centerXAnchor.constraint(equalTo: centerX, constant: centerXConstant).isActive = true
+        if let centerX = centerX {
+            self.centerXAnchor.constraint(equalTo: centerX).isActive = true
         }
         
-        if let centerY = centerY, let centerYConstant = centerYConstant {
-            self.centerYAnchor.constraint(equalTo: centerY, constant: centerYConstant).isActive = true
+        if let centerY = centerY {
+            self.centerYAnchor.constraint(equalTo: centerY).isActive = true
         }
     }
     
