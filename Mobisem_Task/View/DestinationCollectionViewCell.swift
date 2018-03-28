@@ -177,49 +177,37 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         shareTextLabel.text = "Share".uppercased()
         shareTextLabel.font = UIFont.italicSystemFont(ofSize: 12.0)
         shareTextLabel.textColor = UIColor.gray
-        shareTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15, top: reviewImageView.bottomAnchor, topConstant: 20)
+        shareTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+                                          top: reviewImageView.bottomAnchor, topConstant: 20)
         
         // Icon - Facebook
-        iconFacebook.translatesAutoresizingMaskIntoConstraints = false
-        iconFacebook.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-        iconFacebook.leftAnchor.constraint(equalTo: shareTextLabel.rightAnchor, constant: 95).isActive = true
-        iconFacebook.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-        iconFacebook.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconFacebook.arrangeConstraints(shareTextLabel.rightAnchor, leftConstant: 95,
+                                        top: reviewImageView.bottomAnchor, topConstant: 18,
+                                        wEqualToConstant: 18, hEqualToConstant: 18)
         iconFacebook.image = UIImage(named:"icn-facebook")
         
         // Icon - Twitter
-        iconTwitter.translatesAutoresizingMaskIntoConstraints = false
-        iconTwitter.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-        iconTwitter.leftAnchor.constraint(equalTo: iconFacebook.rightAnchor, constant: 5).isActive = true
-        iconTwitter.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-        iconTwitter.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconTwitter.arrangeConstraints(iconFacebook.rightAnchor, leftConstant: 5,
+                                       top: reviewImageView.bottomAnchor, topConstant: 18,
+                                       wEqualToConstant: 18, hEqualToConstant: 18)
         iconTwitter.image = UIImage(named:"icn-twitter")
         
         // Icon - Instagram
-        
-        iconInstagram.translatesAutoresizingMaskIntoConstraints = false
-        iconInstagram.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-        iconInstagram.leftAnchor.constraint(equalTo: iconTwitter.rightAnchor, constant: 5).isActive = true
-        iconInstagram.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-        iconInstagram.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconInstagram.arrangeConstraints(iconTwitter.rightAnchor, leftConstant: 5,
+                                       top: reviewImageView.bottomAnchor, topConstant: 18,
+                                       wEqualToConstant: 18, hEqualToConstant: 18)
         iconInstagram.image = UIImage(named:"icn-instagram")
         
         // Icon - Tumblr
-        
-        iconTumblr.translatesAutoresizingMaskIntoConstraints = false
-        iconTumblr.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-        iconTumblr.leftAnchor.constraint(equalTo: iconInstagram.rightAnchor, constant: 5).isActive = true
-        iconTumblr.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-        iconTumblr.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconTumblr.arrangeConstraints(iconInstagram.rightAnchor, leftConstant: 5,
+                                       top: reviewImageView.bottomAnchor, topConstant: 18,
+                                       wEqualToConstant: 18, hEqualToConstant: 18)
         iconTumblr.image = UIImage(named:"icn-tumblr")
         
         // Icon - Google
-        
-        iconGoogle.translatesAutoresizingMaskIntoConstraints = false
-        iconGoogle.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-        iconGoogle.leftAnchor.constraint(equalTo: iconTumblr.rightAnchor, constant: 5).isActive = true
-        iconGoogle.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-        iconGoogle.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconGoogle.arrangeConstraints(iconTumblr.rightAnchor, leftConstant: 5,
+                                       top: reviewImageView.bottomAnchor, topConstant: 18,
+                                       wEqualToConstant: 18, hEqualToConstant: 18)
         iconGoogle.image = UIImage(named:"icn-google")
     }
     
