@@ -41,22 +41,6 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     var iconInstagram = UIImageView()
     var iconTumblr = UIImageView()
     var iconGoogle = UIImageView()
-
-//    private func commonInit(){
-//        self.prepareViewComponent()
-//    }
-    
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        debugPrint("initwithframe")
-//        self.commonInit()
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        debugPrint("initwithCoder")
-//        self.commonInit()
-//    }
     
     private func prepareViewComponent(){
         checkInButton?.addSubview(checkInLabel)
@@ -77,197 +61,165 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         whiteView?.addSubview(iconGoogle)
     }
     
-
-    var destination: Destination? {
+    private func setShadows() {
+        // MARK - Rounded Corners
+        cellImage.layer.cornerRadius = 5
+        whiteView.layer.cornerRadius = 5
+        cellImage.layer.masksToBounds = true
+        whiteView.layer.masksToBounds = true
         
-        // MARK - Layer Attributes and Assignments
-        didSet {
-            
-            
-            prepareViewComponent()
-            
-            // MARK - Rounded Corners
-            cellImage.layer.cornerRadius = 5
-            whiteView.layer.cornerRadius = 5
-            cellImage.layer.masksToBounds = true
-            whiteView.layer.masksToBounds = true
-            
-            // MARK - Shadows
-                // Image Container Shadow
-            imageContainerView.clipsToBounds = false
-            imageContainerView.layer.shadowColor = Values.shared.shadowColor
-            imageContainerView.layer.shadowOpacity = 0.5
-            imageContainerView.layer.shadowOffset = CGSize.zero
-            imageContainerView.layer.shadowRadius = 6
-            imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 25).cgPath
-            
-                // White Container Shadow
-            whiteContainerView.clipsToBounds = false
-            whiteContainerView.layer.shadowColor = Values.shared.shadowColor
-            whiteContainerView.layer.shadowOpacity = 0.5
-            whiteContainerView.layer.shadowOffset = CGSize.zero
-            whiteContainerView.layer.shadowRadius = 8
-            whiteContainerView.layer.shadowPath = UIBezierPath(roundedRect: whiteContainerView.bounds, cornerRadius: 20).cgPath
-            
-                // Text Shadow
-            titleLabelView.textDropShadow()
-            priceLabelView.textDropShadow()
-            descriptionLabelView.textDropShadow()
-            descriptionLabelView.font = UIFont.italicSystemFont(ofSize: 14.0)
-            dateLabelView.textDropShadow()
-            
-            // MARK - Borders
-                // Button
-            checkInButton.layer.opacity = 0.7
-            checkInButton.layer.borderWidth = 1
-            checkInButton.layer.borderColor = UIColor.white.cgColor
-            
-            // MARK - Add Label on the Check-In Button
-            checkInLabel.translatesAutoresizingMaskIntoConstraints = false
-            checkInLabel.textColor = UIColor.white
-            checkInLabel.centerXAnchor.constraint(equalTo: checkInButton.centerXAnchor).isActive = true
-            checkInLabel.centerYAnchor.constraint(equalTo: checkInButton.centerYAnchor).isActive = true
-            checkInLabel.text = "Check-In"
-            checkInLabel.font = UIFont.systemFont(ofSize: 13.0)
-            
-            // MARK - Add Views on the Bottom Container
-                // Circular Profile Image
-            circleProfileImage.translatesAutoresizingMaskIntoConstraints = false
-            circleProfileImage.clipsToBounds = true
-            circleProfileImage.layer.cornerRadius = 20
-            circleProfileImage.topAnchor.constraint(equalTo: self.whiteContainerView.topAnchor, constant: 15).isActive = true
-            circleProfileImage.leftAnchor.constraint(equalTo: self.whiteView.leftAnchor, constant: 15).isActive = true
-            circleProfileImage.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
-            circleProfileImage.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
-            
-                // Profile Name
-            profileNameLabel.translatesAutoresizingMaskIntoConstraints = false
-            profileNameLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
-            profileNameLabel.textColor = UIColor.black
-            profileNameLabel.leftAnchor.constraint(equalTo: circleProfileImage.rightAnchor, constant: 15).isActive = true
-            profileNameLabel.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 15).isActive = true
-            
-                // Side Text
-            sideTextLabel.translatesAutoresizingMaskIntoConstraints = false
-            sideTextLabel.font = UIFont.systemFont(ofSize: 12.0)
-            sideTextLabel.textColor = UIColor.gray
-            sideTextLabel.leftAnchor.constraint(equalTo: profileNameLabel.rightAnchor, constant: 7).isActive = true
-            sideTextLabel.topAnchor.constraint(equalTo: whiteView.topAnchor, constant: 15).isActive = true
-            sideTextLabel.text = "shared a comment."
-            
-                // Date and Time Text (This is just a string)
-            commentTimeLabel.translatesAutoresizingMaskIntoConstraints = false
-            commentTimeLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
-            commentTimeLabel.leftAnchor.constraint(equalTo: circleProfileImage.rightAnchor, constant: 15).isActive = true
-            commentTimeLabel.topAnchor.constraint(equalTo: profileNameLabel.bottomAnchor, constant: 5).isActive = true
-            commentTimeLabel.text = "07:00"
-            
-            commentDateLabel.translatesAutoresizingMaskIntoConstraints = false
-            commentDateLabel.font = UIFont.systemFont(ofSize: 12.0)
-            commentDateLabel.textColor = UIColor.gray
-            commentDateLabel.leftAnchor.constraint(equalTo: commentTimeLabel.rightAnchor, constant: 7).isActive = true
-            commentDateLabel.topAnchor.constraint(equalTo: sideTextLabel.bottomAnchor, constant: 7).isActive = true
-            commentDateLabel.text = "am  MARCH 26, 2018"
-            
-                // Headline Text
-            headlineLabel.translatesAutoresizingMaskIntoConstraints = false
-            headlineLabel.font = UIFont.boldSystemFont(ofSize: 19.0)
-            headlineLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-            headlineLabel.topAnchor.constraint(equalTo: circleProfileImage.bottomAnchor, constant: 20).isActive = true
-            
-                // Subtitle Text
-            subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-            subtitleLabel.font = UIFont.italicSystemFont(ofSize: 14.0)
-            subtitleLabel.textColor = UIColor.darkGray
-            subtitleLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-            subtitleLabel.topAnchor.constraint(equalTo: headlineLabel.bottomAnchor, constant: 7).isActive = true
-            
-                // Whole Text Label
-            wholeTextLabel.translatesAutoresizingMaskIntoConstraints = false
-            wholeTextLabel.font = UIFont.systemFont(ofSize: 14.0)
-            wholeTextLabel.textColor = UIColor.gray
-            wholeTextLabel.lineBreakMode = .byWordWrapping
-            wholeTextLabel.numberOfLines = 0
-            
-            wholeTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15, right: whiteView.rightAnchor, rightConstant: 10, top: subtitleLabel.bottomAnchor, topConstant: 15)
-            
-//            wholeTextLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-//            wholeTextLabel.rightAnchor.constraint(equalTo: whiteView.rightAnchor, constant: 10).isActive = true
-//            wholeTextLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 15).isActive = true
-            
-                // Review Image View
-            reviewImageView.clipsToBounds = true
-//            reviewImageView.translatesAutoresizingMaskIntoConstraints = false
-//            reviewImageView.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-//            reviewImageView.rightAnchor.constraint(equalTo: whiteView.rightAnchor, constant: 15).isActive = true
-//            reviewImageView.topAnchor.constraint(equalTo: wholeTextLabel.bottomAnchor, constant: 20).isActive = true
-//            reviewImageView.widthAnchor.constraint(equalTo: whiteView.widthAnchor, multiplier: 1, constant: -30).isActive = true
-            reviewImageView.heightAnchor.constraint(equalToConstant: 80.0).isActive = true
-            reviewImageView.contentMode = .scaleAspectFill
-            
-            reviewImageView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15, right: whiteView.rightAnchor, rightConstant: 15, top: wholeTextLabel.bottomAnchor, topConstant: 20, width: whiteView.widthAnchor, widthMultiplier: 1, widthConstant: -30)
-            
-            
-   
-            
-                // Share & Social Media Icons
-                    // Share
-            shareTextLabel.translatesAutoresizingMaskIntoConstraints = false
-            shareTextLabel.font = UIFont.italicSystemFont(ofSize: 12.0)
-            shareTextLabel.textColor = UIColor.gray
-            shareTextLabel.leftAnchor.constraint(equalTo: whiteView.leftAnchor, constant: 15).isActive = true
-            shareTextLabel.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 20).isActive = true
-            shareTextLabel.text = "Share".uppercased()
-            
-                    // Icon - Facebook
-            
-            iconFacebook.translatesAutoresizingMaskIntoConstraints = false
-            iconFacebook.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-            iconFacebook.leftAnchor.constraint(equalTo: shareTextLabel.rightAnchor, constant: 95).isActive = true
-            iconFacebook.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconFacebook.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconFacebook.image = UIImage(named:"icn-facebook")
-            
-                    // Icon - Twitter
-            iconTwitter.translatesAutoresizingMaskIntoConstraints = false
-            iconTwitter.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-            iconTwitter.leftAnchor.constraint(equalTo: iconFacebook.rightAnchor, constant: 5).isActive = true
-            iconTwitter.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconTwitter.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconTwitter.image = UIImage(named:"icn-twitter")
-            
-                    // Icon - Instagram
-            
-            iconInstagram.translatesAutoresizingMaskIntoConstraints = false
-            iconInstagram.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-            iconInstagram.leftAnchor.constraint(equalTo: iconTwitter.rightAnchor, constant: 5).isActive = true
-            iconInstagram.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconInstagram.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconInstagram.image = UIImage(named:"icn-instagram")
-            
-                    // Icon - Tumblr
-            
-            iconTumblr.translatesAutoresizingMaskIntoConstraints = false
-            iconTumblr.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-            iconTumblr.leftAnchor.constraint(equalTo: iconInstagram.rightAnchor, constant: 5).isActive = true
-            iconTumblr.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconTumblr.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconTumblr.image = UIImage(named:"icn-tumblr")
-            
-                    // Icon - Google
-
-            iconGoogle.translatesAutoresizingMaskIntoConstraints = false
-            iconGoogle.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
-            iconGoogle.leftAnchor.constraint(equalTo: iconTumblr.rightAnchor, constant: 5).isActive = true
-            iconGoogle.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconGoogle.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
-            iconGoogle.image = UIImage(named:"icn-google")
-            
-            updateUI()
-        }
+        // MARK - Shadows
+        // Image Container Shadow
+        imageContainerView.clipsToBounds = false
+        imageContainerView.layer.shouldRasterize = true
+        imageContainerView.layer.rasterizationScale = UIScreen.main.scale
+        imageContainerView.layer.shadowColor = Values.shared.shadowColor
+        imageContainerView.layer.shadowOpacity = 0.5
+        imageContainerView.layer.shadowRadius = 6
+        imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 25).cgPath
         
+        // White Container Shadow
+        whiteContainerView.clipsToBounds = false
+        whiteContainerView.layer.shouldRasterize = true
+        whiteContainerView.layer.rasterizationScale = UIScreen.main.scale
+        whiteContainerView.layer.shadowColor = Values.shared.shadowColor
+        whiteContainerView.layer.shadowOpacity = 0.5
+        whiteContainerView.layer.shadowRadius = 8
+        whiteContainerView.layer.shadowPath = UIBezierPath(roundedRect: whiteContainerView.bounds, cornerRadius: 20).cgPath
+        
+        // Text Shadow
+        titleLabelView.textDropShadow()
+        priceLabelView.textDropShadow()
+        descriptionLabelView.textDropShadow()
+        descriptionLabelView.font = UIFont.italicSystemFont(ofSize: 14.0)
+        dateLabelView.textDropShadow()
+        
+        // MARK - Borders
+        // Button
+        checkInButton.layer.opacity = 0.7
+        checkInButton.layer.borderWidth = 1
+        checkInButton.layer.borderColor = UIColor.white.cgColor
     }
-
+    
+    private func setConstraints() {
+        
+        // MARK - Add Label on the Check-In Button
+        checkInLabel.text = "Check-In"
+        checkInLabel.font = UIFont.systemFont(ofSize: 13.0)
+        checkInLabel.textColor = UIColor.white
+        checkInLabel.arrangeConstraints(centerX: checkInButton.centerXAnchor, centerY: checkInButton.centerYAnchor)
+        
+        // MARK - Add Views on the Bottom Container
+        // Circular Profile Image
+        circleProfileImage.clipsToBounds = true
+        circleProfileImage.layer.cornerRadius = 20
+        circleProfileImage.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+                                              top: whiteContainerView.topAnchor, topConstant: 15,
+                                              wEqualToConstant: 40, hEqualToConstant: 40)
+        
+        // Profile Name
+        profileNameLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
+        profileNameLabel.textColor = UIColor.black
+        profileNameLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15, top: whiteView.topAnchor, topConstant: 15)
+        
+        // Side Text
+        sideTextLabel.text = "shared a comment."
+        sideTextLabel.font = UIFont.systemFont(ofSize: 12.0)
+        sideTextLabel.textColor = UIColor.gray
+        sideTextLabel.arrangeConstraints(profileNameLabel.rightAnchor, leftConstant: 7, top: whiteView.topAnchor, topConstant: 15)
+        
+        // Date and Time Text (This is just a string)
+        commentTimeLabel.text = "07:00"
+        commentTimeLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
+        commentTimeLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15,
+                                            top: profileNameLabel.bottomAnchor, topConstant: 5)
+        
+        commentDateLabel.text = "am  MARCH 26, 2018"
+        commentDateLabel.font = UIFont.systemFont(ofSize: 12.0)
+        commentDateLabel.textColor = UIColor.gray
+        commentDateLabel.arrangeConstraints(commentTimeLabel.rightAnchor, leftConstant: 7,
+                                            top: sideTextLabel.bottomAnchor, topConstant: 7)
+        
+        // Headline Text
+        headlineLabel.font = UIFont.boldSystemFont(ofSize: 19.0)
+        headlineLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+                                         top: circleProfileImage.bottomAnchor, topConstant: 20)
+        
+        // Subtitle Text
+        subtitleLabel.font = UIFont.italicSystemFont(ofSize: 14.0)
+        subtitleLabel.textColor = UIColor.darkGray
+        subtitleLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+                                         top: headlineLabel.bottomAnchor, topConstant: 7)
+        
+        // Whole Text Label
+        wholeTextLabel.font = UIFont.systemFont(ofSize: 14.0)
+        wholeTextLabel.textColor = UIColor.gray
+        wholeTextLabel.lineBreakMode = .byWordWrapping
+        wholeTextLabel.numberOfLines = 0
+        wholeTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+                                          right: whiteView.rightAnchor, rightConstant: 10,
+                                          top: subtitleLabel.bottomAnchor, topConstant: 15)
+        
+        // Review Image View
+        reviewImageView.clipsToBounds = true
+        reviewImageView.contentMode = .scaleAspectFill
+        reviewImageView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+                                           right: whiteView.rightAnchor, rightConstant: 15,
+                                           top: wholeTextLabel.bottomAnchor, topConstant: 20,
+                                           width: whiteView.widthAnchor, widthMultiplier: 1, widthConstant: -30,
+                                           hEqualToConstant: 80)
+        
+        // Share & Social Media Icons
+        // Share
+        shareTextLabel.text = "Share".uppercased()
+        shareTextLabel.font = UIFont.italicSystemFont(ofSize: 12.0)
+        shareTextLabel.textColor = UIColor.gray
+        shareTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15, top: reviewImageView.bottomAnchor, topConstant: 20)
+        
+        // Icon - Facebook
+        iconFacebook.translatesAutoresizingMaskIntoConstraints = false
+        iconFacebook.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
+        iconFacebook.leftAnchor.constraint(equalTo: shareTextLabel.rightAnchor, constant: 95).isActive = true
+        iconFacebook.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconFacebook.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconFacebook.image = UIImage(named:"icn-facebook")
+        
+        // Icon - Twitter
+        iconTwitter.translatesAutoresizingMaskIntoConstraints = false
+        iconTwitter.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
+        iconTwitter.leftAnchor.constraint(equalTo: iconFacebook.rightAnchor, constant: 5).isActive = true
+        iconTwitter.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconTwitter.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconTwitter.image = UIImage(named:"icn-twitter")
+        
+        // Icon - Instagram
+        
+        iconInstagram.translatesAutoresizingMaskIntoConstraints = false
+        iconInstagram.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
+        iconInstagram.leftAnchor.constraint(equalTo: iconTwitter.rightAnchor, constant: 5).isActive = true
+        iconInstagram.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconInstagram.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconInstagram.image = UIImage(named:"icn-instagram")
+        
+        // Icon - Tumblr
+        
+        iconTumblr.translatesAutoresizingMaskIntoConstraints = false
+        iconTumblr.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
+        iconTumblr.leftAnchor.constraint(equalTo: iconInstagram.rightAnchor, constant: 5).isActive = true
+        iconTumblr.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconTumblr.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconTumblr.image = UIImage(named:"icn-tumblr")
+        
+        // Icon - Google
+        
+        iconGoogle.translatesAutoresizingMaskIntoConstraints = false
+        iconGoogle.topAnchor.constraint(equalTo: reviewImageView.bottomAnchor, constant: 18).isActive = true
+        iconGoogle.leftAnchor.constraint(equalTo: iconTumblr.rightAnchor, constant: 5).isActive = true
+        iconGoogle.widthAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconGoogle.heightAnchor.constraint(equalToConstant: 18.0).isActive = true
+        iconGoogle.image = UIImage(named:"icn-google")
+    }
+    
     // MARK - Update UI elements with the correct data
     func updateUI() {
         cellImage?.image = destination!.featuredImage!
@@ -284,6 +236,21 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         reviewImageView.image = destination!.reviewImage
     }
     
+    var destination: Destination? {
+        
+        // MARK - Layer Attributes and Assignments
+        willSet {
+            setShadows()
+        }
+        
+        didSet {
+            prepareViewComponent()
+            setConstraints()
+            updateUI()
+        }
+        
+    }
+    
 }
 
 // CONSTRAINTS
@@ -294,8 +261,10 @@ extension UIView {
                         right: NSLayoutXAxisAnchor?=nil, rightConstant: CGFloat?=nil,
                         top: NSLayoutYAxisAnchor?=nil, topConstant: CGFloat?=nil,
                         bottom: NSLayoutYAxisAnchor?=nil, bottomConstant: CGFloat?=nil,
-                        width: NSLayoutDimension?=nil, widthMultiplier: CGFloat?=nil, widthConstant: CGFloat?=nil,
-                        height: NSLayoutDimension?=nil, heightMultiplier: CGFloat?=nil, heightConstant: CGFloat?=nil) {
+                        width: NSLayoutDimension?=nil, widthMultiplier: CGFloat?=nil, widthConstant: CGFloat?=nil, wEqualToConstant: CGFloat?=nil,
+                        height: NSLayoutDimension?=nil, heightMultiplier: CGFloat?=nil, heightConstant: CGFloat?=nil, hEqualToConstant: CGFloat?=nil,
+                        centerX: NSLayoutXAxisAnchor?=nil, centerXConstant: CGFloat?=nil,
+                        centerY: NSLayoutYAxisAnchor?=nil, centerYConstant: CGFloat?=nil) {
         
         self.translatesAutoresizingMaskIntoConstraints = false
         
@@ -322,6 +291,22 @@ extension UIView {
         if let height = height, let heightConstant = heightConstant, let heightMultiplier = heightMultiplier {
             self.heightAnchor.constraint(equalTo: height, multiplier: heightMultiplier, constant: heightConstant).isActive = true
         }
+        
+        if let wEqualToConstant = wEqualToConstant {
+            self.widthAnchor.constraint(equalToConstant: wEqualToConstant).isActive = true
+        }
+        
+        if let hEqualToConstant = hEqualToConstant {
+            self.heightAnchor.constraint(equalToConstant: hEqualToConstant).isActive = true
+        }
+        
+        if let centerX = centerX, let centerXConstant = centerXConstant {
+            self.centerXAnchor.constraint(equalTo: centerX, constant: centerXConstant).isActive = true
+        }
+        
+        if let centerY = centerY, let centerYConstant = centerYConstant {
+            self.centerYAnchor.constraint(equalTo: centerY, constant: centerYConstant).isActive = true
+        }
     }
     
 }
@@ -344,19 +329,4 @@ extension UILabel {
 }
 
 
-class CircularImageView: UIImageView {
-    
-    init() {
-        super.init(image: nil)
-        debugPrint("CircularImageView...init")
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        debugPrint("CircularImageView...deinit")
-    }
-    
-}
+
