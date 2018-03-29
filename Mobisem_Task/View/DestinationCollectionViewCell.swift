@@ -168,51 +168,14 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         reviewImageView.contentMode = .scaleAspectFill
         reviewImageView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
                                            right: whiteView.rightAnchor, rightConstant: 15,
-                                           top: wholeTextLabel.bottomAnchor, topConstant: 20,
+                                           top: wholeTextLabel.bottomAnchor, topConstant: 10,
                                            width: whiteView.widthAnchor, widthMultiplier: 1, widthConstant: -30,
                                            hEqualToConstant: 80)
-        
-        // Share & Social Media Icons
-        // Share
-        shareTextLabel.text = "Share".uppercased()
-        shareTextLabel.font = UIFont.italicSystemFont(ofSize: 12.0)
-        shareTextLabel.textColor = UIColor.gray
-        shareTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
-                                          top: reviewImageView.bottomAnchor, topConstant: 20)
-        
-        // Icon - Facebook
-        iconFacebook.arrangeConstraints(shareTextLabel.rightAnchor, leftConstant: 95,
-                                        top: reviewImageView.bottomAnchor, topConstant: 18,
-                                        wEqualToConstant: 18, hEqualToConstant: 18)
-        iconFacebook.image = UIImage(named:"icn-facebook")
-        
-        // Icon - Twitter
-        iconTwitter.arrangeConstraints(iconFacebook.rightAnchor, leftConstant: 5,
-                                       top: reviewImageView.bottomAnchor, topConstant: 18,
-                                       wEqualToConstant: 18, hEqualToConstant: 18)
-        iconTwitter.image = UIImage(named:"icn-twitter")
-        
-        // Icon - Instagram
-        iconInstagram.arrangeConstraints(iconTwitter.rightAnchor, leftConstant: 5,
-                                       top: reviewImageView.bottomAnchor, topConstant: 18,
-                                       wEqualToConstant: 18, hEqualToConstant: 18)
-        iconInstagram.image = UIImage(named:"icn-instagram")
-        
-        // Icon - Tumblr
-        iconTumblr.arrangeConstraints(iconInstagram.rightAnchor, leftConstant: 5,
-                                       top: reviewImageView.bottomAnchor, topConstant: 18,
-                                       wEqualToConstant: 18, hEqualToConstant: 18)
-        iconTumblr.image = UIImage(named:"icn-tumblr")
-        
-        // Icon - Google
-        iconGoogle.arrangeConstraints(iconTumblr.rightAnchor, leftConstant: 5,
-                                       top: reviewImageView.bottomAnchor, topConstant: 18,
-                                       wEqualToConstant: 18, hEqualToConstant: 18)
-        iconGoogle.image = UIImage(named:"icn-google")
     }
     
     // MARK - Update UI elements with the correct data
     func updateUI() {
+        // Cell Data
         cellImage?.image = destination!.featuredImage!
         titleLabelView.text = destination!.title.uppercased()
         priceLabelView.text = destination!.price.uppercased()
@@ -225,17 +188,60 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         subtitleLabel.text = destination!.subtitle
         wholeTextLabel.text = destination!.wholeText
         reviewImageView.image = destination!.reviewImage
+        
+        // Share & Social Media Icons
+        shareTextLabel.text = "Share".uppercased()
+        shareTextLabel.font = UIFont.italicSystemFont(ofSize: 12.0)
+        shareTextLabel.textColor = UIColor.gray
+        
+        iconFacebook.image = UIImage(named:"icn-facebook")
+        iconTwitter.image = UIImage(named:"icn-twitter")
+        iconInstagram.image = UIImage(named:"icn-instagram")
+        iconTumblr.image = UIImage(named:"icn-tumblr")
+        iconGoogle.image = UIImage(named:"icn-google")
+    }
+    
+    func applyStackView() {
+        let stackView = UIStackView()
+        stackView.axis = UILayoutConstraintAxis.horizontal
+        stackView.distribution = UIStackViewDistribution.fill
+        stackView.alignment = UIStackViewAlignment.leading
+        stackView.spacing = 3.0
+        
+        whiteView.addSubview(stackView)
+
+        stackView.addArrangedSubview(shareTextLabel)
+        stackView.addArrangedSubview(iconFacebook)
+        stackView.addArrangedSubview(iconTwitter)
+        stackView.addArrangedSubview(iconInstagram)
+        stackView.addArrangedSubview(iconTumblr)
+        stackView.addArrangedSubview(iconGoogle)
+        
+        stackView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 20,
+                                     right: whiteView.rightAnchor, rightConstant: -15,
+                                     top: reviewImageView.bottomAnchor, topConstant: 10,
+                                     bottom: whiteView.bottomAnchor, bottomConstant: 0,
+                                     hEqualToConstant: 25)
+        
+        iconFacebook.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
+        iconTwitter.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
+        iconInstagram.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
+        iconTumblr.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
+        iconGoogle.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
+
+
     }
     
     var destination: Destination? {
         
         willSet {
+            prepareViewComponent()
             setShadows()
+            setConstraints()
+            applyStackView()
         }
         
         didSet {
-            prepareViewComponent()
-            setConstraints()
             updateUI()
         }
         
@@ -243,7 +249,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     
 }
 
-// Function for constraints
+// Extension for view constraints
 extension UIView {
     
     func arrangeConstraints(_ left: NSLayoutXAxisAnchor?=nil, leftConstant: CGFloat?=nil,
@@ -299,7 +305,7 @@ extension UIView {
     
 }
 
-// Drop shadow extension for texts
+// Extension for label shadow
 extension UILabel {
     func textDropShadow() {
         self.layer.shadowColor = UIColor.black.cgColor
