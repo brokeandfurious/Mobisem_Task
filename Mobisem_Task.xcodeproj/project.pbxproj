@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		036F2CA8206A3C74008FD17D /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036F2CA7206A3C74008FD17D /* ShareViewController.swift */; };
+		03C696B5206D321C005DA588 /* DestinationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C696B4206D321C005DA588 /* DestinationCollectionViewCell.swift */; };
+		03C696B7206D3236005DA588 /* SemConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C696B6206D3236005DA588 /* SemConstraint.swift */; };
 		62E453DCA6F8D4214ED3C4D9 /* Pods_Mobisem_Task.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F4E1F3B51F2E948D678201CA /* Pods_Mobisem_Task.framework */; };
 		9D746AE5205EEF40007E1752 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D746AE4205EEF40007E1752 /* AppDelegate.swift */; };
 		9D746AE7205EEF40007E1752 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D746AE6205EEF40007E1752 /* ViewController.swift */; };
@@ -15,7 +17,6 @@
 		9D746AEC205EEF40007E1752 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D746AEB205EEF40007E1752 /* Assets.xcassets */; };
 		9D746AEF205EEF40007E1752 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D746AED205EEF40007E1752 /* LaunchScreen.storyboard */; };
 		9D746AFE205F2487007E1752 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D746AFD205F2487007E1752 /* Destination.swift */; };
-		9D746B01205F28E3007E1752 /* DestinationCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D746B00205F28E3007E1752 /* DestinationCollectionViewCell.swift */; };
 		9DB6A501205F75B80009FA7C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6A500205F75B70009FA7C /* DetailViewController.swift */; };
 		9DB6A503205F97080009FA7C /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6A502205F97080009FA7C /* CustomNavigationController.swift */; };
 		9DB6A505205FAB340009FA7C /* Values.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB6A504205FAB340009FA7C /* Values.swift */; };
@@ -23,6 +24,8 @@
 
 /* Begin PBXFileReference section */
 		036F2CA7206A3C74008FD17D /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		03C696B4206D321C005DA588 /* DestinationCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationCollectionViewCell.swift; sourceTree = "<group>"; };
+		03C696B6206D3236005DA588 /* SemConstraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SemConstraint.swift; sourceTree = "<group>"; };
 		4CC84C2509A1397B91F9DB7E /* Pods-Mobisem_Task.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mobisem_Task.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Mobisem_Task/Pods-Mobisem_Task.debug.xcconfig"; sourceTree = "<group>"; };
 		787BEBE4922C78F0AF3DEB3F /* Pods-Mobisem_Task.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mobisem_Task.release.xcconfig"; path = "Pods/Target Support Files/Pods-Mobisem_Task/Pods-Mobisem_Task.release.xcconfig"; sourceTree = "<group>"; };
 		9D746AE1205EEF40007E1752 /* Mobisem_Task.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mobisem_Task.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,7 +36,6 @@
 		9D746AEE205EEF40007E1752 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D746AF0205EEF40007E1752 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D746AFD205F2487007E1752 /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
-		9D746B00205F28E3007E1752 /* DestinationCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DestinationCollectionViewCell.swift; sourceTree = "<group>"; };
 		9DB6A500205F75B70009FA7C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		9DB6A502205F97080009FA7C /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		9DB6A504205FAB340009FA7C /* Values.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Values.swift; sourceTree = "<group>"; };
@@ -52,6 +54,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		03C696B3206D3204005DA588 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				03C696B4206D321C005DA588 /* DestinationCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		5CBCC1D2BA7849E799210C8E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,12 +106,13 @@
 		9D746AFC205F2476007E1752 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				03C696B3206D3204005DA588 /* Cell */,
 				9D746AE6205EEF40007E1752 /* ViewController.swift */,
 				9DB6A500205F75B70009FA7C /* DetailViewController.swift */,
-				9D746B00205F28E3007E1752 /* DestinationCollectionViewCell.swift */,
 				9DB6A502205F97080009FA7C /* CustomNavigationController.swift */,
 				9DB6A504205FAB340009FA7C /* Values.swift */,
 				036F2CA7206A3C74008FD17D /* ShareViewController.swift */,
+				03C696B6206D3236005DA588 /* SemConstraint.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -255,10 +266,11 @@
 				9DB6A503205F97080009FA7C /* CustomNavigationController.swift in Sources */,
 				9D746AE7205EEF40007E1752 /* ViewController.swift in Sources */,
 				9D746AE5205EEF40007E1752 /* AppDelegate.swift in Sources */,
+				03C696B7206D3236005DA588 /* SemConstraint.swift in Sources */,
 				9DB6A501205F75B80009FA7C /* DetailViewController.swift in Sources */,
 				9D746AFE205F2487007E1752 /* Destination.swift in Sources */,
 				036F2CA8206A3C74008FD17D /* ShareViewController.swift in Sources */,
-				9D746B01205F28E3007E1752 /* DestinationCollectionViewCell.swift in Sources */,
+				03C696B5206D321C005DA588 /* DestinationCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,12 +408,15 @@
 			baseConfigurationReference = 4CC84C2509A1397B91F9DB7E /* Pods-Mobisem_Task.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KHBM4524SZ;
+				DEVELOPMENT_TEAM = 7U66J8F4HK;
 				INFOPLIST_FILE = Mobisem_Task/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.murtilicious.Mobisem-Task";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.murattestprofile.Mobisem-Task";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -412,12 +427,15 @@
 			baseConfigurationReference = 787BEBE4922C78F0AF3DEB3F /* Pods-Mobisem_Task.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = KHBM4524SZ;
+				DEVELOPMENT_TEAM = 7U66J8F4HK;
 				INFOPLIST_FILE = Mobisem_Task/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.murtilicious.Mobisem-Task";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.murattestprofile.Mobisem-Task";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

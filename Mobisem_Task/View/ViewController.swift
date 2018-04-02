@@ -93,7 +93,7 @@ extension ViewController : UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DestinationCell", for: indexPath) as! DestinationCollectionViewCell
-        cell.destination = self.destinations[indexPath.item]
+        cell.destination = self.destinations[indexPath.item] 
         return cell
     }
     
@@ -102,8 +102,8 @@ extension ViewController : UICollectionViewDataSource
         let p = indexPath.item
         let detailVC = mainStoryBoard.instantiateViewController(withIdentifier: "VC2") as! DetailViewController
         detailVC.destination = self.destinations[p]
-        detailVC.isHeroEnabled = true
-        detailVC.heroModalAnimationType = .selectBy(presenting: .zoom, dismissing: .zoomOut)
+        detailVC.hero.isEnabled = true
+        detailVC.hero.modalAnimationType = .selectBy(presenting: .zoom, dismissing: .zoomOut)
         
         present(detailVC, animated: true, completion: nil)
         collectionView.reloadData()
@@ -125,7 +125,7 @@ extension ViewController : UICollectionViewDataSource
         let indexOfFocusedCell = self.indexOfMajorCell()
         
         // Calculate Velocity and Swipe Settings
-        let swipeVelocityThreshold: CGFloat = 0.5
+        let swipeVelocityThreshold: CGFloat = 0.1
         let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.destinations.count && velocity.x > swipeVelocityThreshold
         let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
         let majorCellIsTheCellBeforeDragging = indexOfFocusedCell == indexOfCellBeforeDragging
@@ -134,11 +134,12 @@ extension ViewController : UICollectionViewDataSource
         // Paging snap and animation Settings
         if didUseSwipeToSkipCell {
             
-            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
+//            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
+            let snapToIndex = indexOfCellBeforeDragging
             let toValue = collectionViewLayout.itemSize.width * CGFloat(snapToIndex)
             
             // Animate spring and velocity of paging
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
+            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
                 scrollView.contentOffset = CGPoint(x: toValue, y: 0)
                 scrollView.layoutIfNeeded()
             }, completion: nil)
@@ -146,7 +147,11 @@ extension ViewController : UICollectionViewDataSource
         } else {
             // Scroll to a cell item
             let indexPath = IndexPath(row: indexOfFocusedCell, section: 0)
-            collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            if indexOfFocusedCell >= destinations.count - 1 {
+                print("disabled scrolling further")
+            } else {
+                collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            }
         }
     }
 }
