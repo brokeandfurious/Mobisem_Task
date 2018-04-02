@@ -17,30 +17,49 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var whiteView: UIView!
     @IBOutlet weak var checkInButton: UIView!
-    var checkInLabel = UILabel()
-    var commentTimeLabel = UILabel()
-    var commentDateLabel = UILabel()
-    var shareTextLabel = UILabel()
-    
     @IBOutlet weak var titleLabelView: UILabel!
     @IBOutlet weak var priceLabelView: UILabel!
     @IBOutlet weak var descriptionLabelView: UILabel!
     @IBOutlet weak var dateLabelView: UILabel!
     
+    var checkInLabel: UILabel
+    var commentTimeLabel: UILabel
+    var commentDateLabel: UILabel
+    var shareTextLabel:UILabel
+    
     // MARK - Programmatically Added Views (Bottom Container)
-    var circleProfileImage = UIImageView()
-    var profileNameLabel = UILabel()
+    var circleProfileImage: UIImageView
+    var profileNameLabel: UILabel
     var sideTextLabel = UILabel()
     var headlineLabel = UILabel()
     var subtitleLabel = UILabel()
     var wholeTextLabel = UILabel()
-    var reviewImageView = UIImageView()
+    var reviewImageView: UIImageView
         // social icons
     var iconFacebook = UIImageView()
     var iconTwitter = UIImageView()
     var iconInstagram = UIImageView()
     var iconTumblr = UIImageView()
     var iconGoogle = UIImageView()
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        commonInit()
+        setConstraints()
+        applyStackView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        self.reviewImageView = UIImageView()
+        self.checkInLabel = UILabel()
+        self.commentTimeLabel = UILabel()
+        self.commentDateLabel = UILabel()
+        self.circleProfileImage = UIImageView()
+        self.profileNameLabel = UILabel()
+        self.shareTextLabel = UILabel()
+        super.init(coder: aDecoder)
+
+    }
     
     // Add subviews on the page
     private func prepareViewComponent(){
@@ -62,47 +81,6 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         whiteView?.addSubview(iconGoogle)
     }
     
-    // MARK - Set shadows for views
-    private func setShadows() {
-        // MARK - Rounded Corners
-        cellImage.layer.cornerRadius = 5
-        whiteView.layer.cornerRadius = 5
-        cellImage.layer.masksToBounds = true
-        whiteView.layer.masksToBounds = true
-        
-        // MARK - Shadows
-        // Image Container Shadow
-        imageContainerView.clipsToBounds = false
-        imageContainerView.layer.shouldRasterize = true
-        imageContainerView.layer.rasterizationScale = UIScreen.main.scale
-        imageContainerView.layer.shadowColor = Values.shared.shadowColor
-        imageContainerView.layer.shadowOpacity = 0.5
-        imageContainerView.layer.shadowRadius = 6
-        imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 25).cgPath
-        
-        // White Container Shadow
-        whiteContainerView.clipsToBounds = false
-        whiteContainerView.layer.shouldRasterize = true
-        whiteContainerView.layer.rasterizationScale = UIScreen.main.scale
-        whiteContainerView.layer.shadowColor = Values.shared.shadowColor
-        whiteContainerView.layer.shadowOpacity = 0.5
-        whiteContainerView.layer.shadowRadius = 8
-        whiteContainerView.layer.shadowPath = UIBezierPath(roundedRect: whiteContainerView.bounds, cornerRadius: 20).cgPath
-        
-        // Text Shadow
-        titleLabelView.textDropShadow()
-        priceLabelView.textDropShadow()
-        descriptionLabelView.textDropShadow()
-        descriptionLabelView.font = UIFont.italicSystemFont(ofSize: 14.0)
-        dateLabelView.textDropShadow()
-        
-        // MARK - Borders
-        // Button
-        checkInButton.layer.opacity = 0.7
-        checkInButton.layer.borderWidth = 1
-        checkInButton.layer.borderColor = UIColor.white.cgColor
-    }
-    
     // MARK - Set constraints for all views
     private func setConstraints() {
         
@@ -110,71 +88,70 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         checkInLabel.text = "Check-In"
         checkInLabel.font = UIFont.systemFont(ofSize: 13.0)
         checkInLabel.textColor = UIColor.white
-        checkInLabel.arrangeConstraints(centerX: checkInButton.centerXAnchor, centerY: checkInButton.centerYAnchor)
+        checkInLabel.arrangeConstraints(centerX: checkInButton?.centerXAnchor, centerY: checkInButton?.centerYAnchor)
         
-        // MARK - Add Views on the Bottom Container
+//         MARK - Add Views on the Bottom Container
         // Circular Profile Image
         circleProfileImage.clipsToBounds = true
         circleProfileImage.layer.cornerRadius = 20
-        circleProfileImage.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
-                                              top: whiteContainerView.topAnchor, topConstant: 15,
+        circleProfileImage.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
+                                              top: whiteContainerView?.topAnchor, topConstant: 15,
                                               wEqualToConstant: 40, hEqualToConstant: 40)
-        
+
         // Profile Name
         profileNameLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
         profileNameLabel.textColor = UIColor.black
-        profileNameLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15, top: whiteView.topAnchor, topConstant: 15)
-        
+        profileNameLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15, top: whiteView?.topAnchor, topConstant: 15)
+
         // Side Text
         sideTextLabel.text = "shared a comment."
         sideTextLabel.font = UIFont.systemFont(ofSize: 12.0)
         sideTextLabel.textColor = UIColor.gray
-        sideTextLabel.arrangeConstraints(profileNameLabel.rightAnchor, leftConstant: 7, top: whiteView.topAnchor, topConstant: 15)
-        
+        sideTextLabel.arrangeConstraints(profileNameLabel.rightAnchor, leftConstant: 7, top: whiteView?.topAnchor, topConstant: 15)
+
         // Date and Time Text (This is just a string)
         commentTimeLabel.text = "07:00"
         commentTimeLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
-        commentTimeLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15,
-                                            top: profileNameLabel.bottomAnchor, topConstant: 5)
-        
+        commentTimeLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15,top: profileNameLabel.bottomAnchor, topConstant: 5)
+
         commentDateLabel.text = "am  MARCH 26, 2018"
         commentDateLabel.font = UIFont.systemFont(ofSize: 12.0)
         commentDateLabel.textColor = UIColor.gray
         commentDateLabel.arrangeConstraints(commentTimeLabel.rightAnchor, leftConstant: 7,
                                             top: sideTextLabel.bottomAnchor, topConstant: 7)
-        
+
         // Headline Text
         headlineLabel.font = UIFont.boldSystemFont(ofSize: 19.0)
-        headlineLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+        headlineLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
                                          top: circleProfileImage.bottomAnchor, topConstant: 20)
-        
+
         // Subtitle Text
         subtitleLabel.font = UIFont.italicSystemFont(ofSize: 14.0)
         subtitleLabel.textColor = UIColor.darkGray
-        subtitleLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
+        subtitleLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
                                          top: headlineLabel.bottomAnchor, topConstant: 7)
-        
+
         // Whole Text Label
         wholeTextLabel.font = UIFont.systemFont(ofSize: 14.0)
         wholeTextLabel.textColor = UIColor.gray
         wholeTextLabel.lineBreakMode = .byWordWrapping
         wholeTextLabel.numberOfLines = 0
-        wholeTextLabel.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
-                                          right: whiteView.rightAnchor, rightConstant: 10,
+        wholeTextLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
+                                          right: whiteView?.rightAnchor, rightConstant: 10,
                                           top: subtitleLabel.bottomAnchor, topConstant: 15)
-        
+
         // Review Image View
         reviewImageView.clipsToBounds = true
         reviewImageView.contentMode = .scaleAspectFill
-        reviewImageView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 15,
-                                           right: whiteView.rightAnchor, rightConstant: 15,
+        reviewImageView.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
+                                           right: whiteView?.rightAnchor, rightConstant: 15,
                                            top: wholeTextLabel.bottomAnchor, topConstant: 10,
-                                           width: whiteView.widthAnchor, widthMultiplier: 1, widthConstant: -30,
+                                           width: whiteView?.widthAnchor, widthMultiplier: 1, widthConstant: -30,
                                            hEqualToConstant: 80)
     }
     
     // MARK - Update UI elements with the correct data
-    func updateUI() {
+    private func updateUI() {
         // Cell Data
         cellImage?.image = destination!.featuredImage!
         titleLabelView.text = destination!.title.uppercased()
@@ -201,26 +178,27 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         iconGoogle.image = UIImage(named:"icn-google")
     }
     
-    func applyStackView() {
+    // MARK - Set Stack View
+    private func applyStackView() {
         let stackView = UIStackView()
         stackView.axis = UILayoutConstraintAxis.horizontal
         stackView.distribution = UIStackViewDistribution.fill
         stackView.alignment = UIStackViewAlignment.leading
         stackView.spacing = 3.0
         
-        whiteView.addSubview(stackView)
+        whiteView?.addSubview(stackView)
 
-        stackView.addArrangedSubview(shareTextLabel)
+        stackView.addArrangedSubview(shareTextLabel) // NIL
         stackView.addArrangedSubview(iconFacebook)
         stackView.addArrangedSubview(iconTwitter)
         stackView.addArrangedSubview(iconInstagram)
         stackView.addArrangedSubview(iconTumblr)
         stackView.addArrangedSubview(iconGoogle)
         
-        stackView.arrangeConstraints(whiteView.leftAnchor, leftConstant: 20,
-                                     right: whiteView.rightAnchor, rightConstant: -15,
+        stackView.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 20,
+                                     right: whiteView?.rightAnchor, rightConstant: -15,
                                      top: reviewImageView.bottomAnchor, topConstant: 10,
-                                     bottom: whiteView.bottomAnchor, bottomConstant: 0,
+                                     bottom: whiteView?.bottomAnchor, bottomConstant: 0,
                                      hEqualToConstant: 25)
         
         iconFacebook.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
@@ -229,80 +207,63 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         iconTumblr.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
         iconGoogle.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
 
-
     }
-    
+
+    private func commonInit(){
+        prepareViewComponent()
+        setShadows()
+    }
+
     var destination: Destination? {
-        
-        willSet {
-            prepareViewComponent()
-            setShadows()
-            setConstraints()
-            applyStackView()
-        }
-        
         didSet {
             updateUI()
         }
-        
     }
     
 }
 
-// Extension for view constraints
-extension UIView {
-    
-    func arrangeConstraints(_ left: NSLayoutXAxisAnchor?=nil, leftConstant: CGFloat?=nil,
-                        right: NSLayoutXAxisAnchor?=nil, rightConstant: CGFloat?=nil,
-                        top: NSLayoutYAxisAnchor?=nil, topConstant: CGFloat?=nil,
-                        bottom: NSLayoutYAxisAnchor?=nil, bottomConstant: CGFloat?=nil,
-                        width: NSLayoutDimension?=nil, widthMultiplier: CGFloat?=nil, widthConstant: CGFloat?=nil, wEqualToConstant: CGFloat?=nil,
-                        height: NSLayoutDimension?=nil, heightMultiplier: CGFloat?=nil, heightConstant: CGFloat?=nil, hEqualToConstant: CGFloat?=nil,
-                        centerX: NSLayoutXAxisAnchor?=nil, centerY: NSLayoutYAxisAnchor?=nil) {
+// Extension for cell shadows and borders
+extension DestinationCollectionViewCell {
+    // MARK - Set shadows for views
+    private func setShadows() {
+        // MARK - Rounded Corners
+        cellImage?.layer.cornerRadius = 5
+        whiteView?.layer.cornerRadius = 5
+        cellImage?.layer.masksToBounds = true
+        whiteView?.layer.masksToBounds = true
         
-        self.translatesAutoresizingMaskIntoConstraints = false
+        // MARK - Shadows
+        // Image Container Shadow
+        imageContainerView?.clipsToBounds = false
+        imageContainerView?.layer.shouldRasterize = true
+        imageContainerView?.layer.rasterizationScale = UIScreen.main.scale
+        imageContainerView?.layer.shadowColor = Values.shared.shadowColor
+        imageContainerView?.layer.shadowOpacity = 0.5
+        imageContainerView?.layer.shadowRadius = 6
+        imageContainerView?.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 25).cgPath
         
-        if let left = left, let leftConstant = leftConstant {
-            self.leftAnchor.constraint(equalTo: left, constant: leftConstant).isActive = true
-        }
+        // White Container Shadow
+        whiteContainerView?.clipsToBounds = false
+        whiteContainerView?.layer.shouldRasterize = true
+        whiteContainerView?.layer.rasterizationScale = UIScreen.main.scale
+        whiteContainerView?.layer.shadowColor = Values.shared.shadowColor
+        whiteContainerView?.layer.shadowOpacity = 0.5
+        whiteContainerView?.layer.shadowRadius = 8
+        whiteContainerView?.layer.shadowPath = UIBezierPath(roundedRect: whiteContainerView.bounds, cornerRadius: 20).cgPath
         
-        if let right = right, let rightConstant = rightConstant {
-            self.rightAnchor.constraint(equalTo: right, constant: rightConstant).isActive = true
-        }
+        // Text Shadow
+        titleLabelView?.textDropShadow()
+        priceLabelView?.textDropShadow()
+        descriptionLabelView?.textDropShadow()
+        descriptionLabelView?.font = UIFont.italicSystemFont(ofSize: 14.0)
+        dateLabelView?.textDropShadow()
         
-        if let top = top, let topConstant = topConstant {
-            self.topAnchor.constraint(equalTo: top, constant: topConstant).isActive = true
-        }
-        
-        if let bottom = bottom, let bottomConstant = bottomConstant {
-            self.bottomAnchor.constraint(equalTo: bottom, constant: bottomConstant).isActive = true
-        }
-        
-        if let width = width, let widthConstant = widthConstant, let widthMultiplier = widthMultiplier {
-            self.widthAnchor.constraint(equalTo: width, multiplier: widthMultiplier, constant: widthConstant).isActive = true
-        }
-        
-        if let height = height, let heightConstant = heightConstant, let heightMultiplier = heightMultiplier {
-            self.heightAnchor.constraint(equalTo: height, multiplier: heightMultiplier, constant: heightConstant).isActive = true
-        }
-        
-        if let wEqualToConstant = wEqualToConstant {
-            self.widthAnchor.constraint(equalToConstant: wEqualToConstant).isActive = true
-        }
-        
-        if let hEqualToConstant = hEqualToConstant {
-            self.heightAnchor.constraint(equalToConstant: hEqualToConstant).isActive = true
-        }
-        
-        if let centerX = centerX {
-            self.centerXAnchor.constraint(equalTo: centerX).isActive = true
-        }
-        
-        if let centerY = centerY {
-            self.centerYAnchor.constraint(equalTo: centerY).isActive = true
-        }
+        // MARK - Borders
+        // Button
+        checkInButton?.layer.opacity = 0.7
+        checkInButton?.layer.borderWidth = 1
+        checkInButton?.layer.borderColor = UIColor.white.cgColor
     }
-    
 }
 
 // Extension for label shadow
