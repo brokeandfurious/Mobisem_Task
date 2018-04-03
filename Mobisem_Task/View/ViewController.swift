@@ -8,10 +8,10 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
+class ViewController: UIViewController, UICollectionViewDelegate{
     
     // MARK - Data Source
-    private var destinations = Destination.createDestination()
+    private let destinations = Destination.createDestination()
     private var selectedDestination: Destination?
     private var indexOfCellBeforeDragging = 0
     
@@ -20,31 +20,64 @@ class ViewController: UIViewController, UICollectionViewDelegate, UISearchContro
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var destinationCollectionView: UICollectionView!
     @IBOutlet weak var collectionViewLayout: UICollectionViewFlowLayout!
- 
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var burgerMenu: UIButton!
+    
     // Gradient Background
     let gradient = Values.shared.gradient
     
     // Search Bar Settings
-    var searchWrapperView = UIView()
-    var searchController = UISearchController(searchResultsController: nil)
     var filtered = [Destination]()
-    var searchActive: Bool = false
+    var favorites = [Destination]()
+    var favoritesTapped = Bool()
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.filtered.append(contentsOf: self.destinations)
+        self.favorites.append(self.destinations[2])
+        self.favorites.append(self.destinations[4])
+    }
     
     // MARK - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // MARK - Configure Page Appearance
-        setUpBackgroundGradient()
         collectionView.isDirectionalLockEnabled = true
         collectionViewLayout.minimumLineSpacing = 20
         configureCollectionViewLayoutItemSize()
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        searchBar.barStyle = .blackTranslucent
+        setUpBackgroundGradient()
+        pageControl.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        
+//         Dismiss keyboard
+//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedOutsideKeyboard))
+//        collectionView!.addGestureRecognizer(tapGesture)
+        
+        // Initial boolean value for favorites
+        favoritesTapped = false
+        
     }
     
     override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         // Fixes gradient issues on rotation.
         gradient.frame = view.bounds
-        applySearchView()
+        self.collectionView.contentSize = CGSize.init(width: self.collectionView.contentSize.width, height: 0)
+    }
+    
+//    @objc func tappedOutsideKeyboard(gesture: UITapGestureRecognizer) {
+//        searchBar.resignFirstResponder()
+//    }
+    
+    @IBAction func favoritesTapped(_ sender: Any) {
+        if !favoritesTapped {
+            favoritesTapped = true
+        } else {
+            favoritesTapped = false
+        }
+        collectionView.reloadData()
     }
     
     func setUpBackgroundGradient() {
@@ -79,77 +112,39 @@ class ViewController: UIViewController, UICollectionViewDelegate, UISearchContro
         let proportionalOffset = collectionViewLayout.collectionView!.contentOffset.x / itemWidth
         return Int(round(proportionalOffset))
     }
+
+}
+
+extension ViewController : UISearchBarDelegate {
     
-    // MARK - SEARCH STUFF
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        debugPrint("did begin editing")
+    }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchActive = false
-        self.dismiss(animated: true, completion: nil)
+        searchBar.resignFirstResponder()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filtered.removeAll()
+        filtered.append(contentsOf:self.filterContentForSearchText(searchText))
         self.collectionView.reloadData()
     }
     
-    func updateSearchResults(for searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        filtered = destinations.filter({( destination: Destination ) -> Bool in
-            return destination.title.lowercased().contains(searchText.lowercased())
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") -> [Destination] {
+        let replacedString = searchText.replacingOccurrences(of: " ", with: "")
+        if replacedString.count == 0 {
+            return self.destinations
+        }
+        
+        return destinations.filter({( destination: Destination ) -> Bool in
+            return destination.title.lowercased().contains(replacedString.lowercased())
         })
     }
-    
-    func searchBarIsEmpty() -> Bool {
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
-    
-    private func applySearchView() {
-        self.searchController.searchResultsUpdater = self
-        self.searchController.delegate = self
-        self.searchController.searchBar.delegate = self
-        
-//        self.searchController.searchBar.showsCancelButton = false
-        self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.dimsBackgroundDuringPresentation = true
-        self.searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = "Search Destinations"
-        searchController.searchBar.sizeToFit()
-        
-        definesPresentationContext = true
-//        searchController.searchBar.becomeFirstResponder()
-        
-        searchController.searchBar.searchBarStyle = .minimal
-        searchController.searchBar.tintColor = .clear
-        searchController.searchBar.barTintColor = .clear
-        
-        self.view.addSubview(searchWrapperView)
-//        searchWrapperView.backgroundColor = .clear
-        
-        searchWrapperView.arrangeConstraints(self.view.leftAnchor, leftConstant: 25,
-                                             right: self.view.rightAnchor, rightConstant: 75,
-                                             top: self.view.topAnchor, topConstant: 20,
-                                             width: self.view.widthAnchor, widthMultiplier: 0.7, widthConstant: 1,
-                                             height: self.view.heightAnchor, heightMultiplier: 0.08, heightConstant: 1)
-        
-        searchWrapperView.addSubview(searchController.searchBar)
-        searchController.searchBar.arrangeConstraints(searchWrapperView.leftAnchor, leftConstant: 0,
-                                             right: searchWrapperView.rightAnchor, rightConstant: 0,
-                                             top: searchWrapperView.topAnchor, topConstant: 0,
-                                             bottom: searchWrapperView.bottomAnchor, bottomConstant: 0,
-                                             width: searchWrapperView.widthAnchor, widthMultiplier: 1, widthConstant: 1,
-                                             height: searchWrapperView.heightAnchor, heightMultiplier: 1, heightConstant: 1,
-                                             centerX: searchWrapperView.centerXAnchor, centerY: searchWrapperView.centerYAnchor)
-        
-//        searchWrapperView.isUserInteractionEnabled = true
-//        searchController.searchBar.isUserInteractionEnabled = true
-
-    }
-    
 }
 
 // CollectionView data source
@@ -165,23 +160,23 @@ extension ViewController : UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        pageControl.numberOfPages = destinations.count
-        
-        if isFiltering() {
-            return filtered.count
+        if favoritesTapped {
+            pageControl.numberOfPages = favorites.count
+            return favorites.count
         } else {
-            return destinations.count
+            pageControl.numberOfPages = filtered.count
+            return filtered.count
         }
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DestinationCell", for: indexPath) as! DestinationCollectionViewCell
-        cell.destination = self.destinations[indexPath.item]
         
-        if isFiltering() {
-            cell.destination = filtered[indexPath.item]
+        if favoritesTapped {
+            cell.destination = self.favorites[indexPath.item]
         } else {
-            cell.destination = destinations[indexPath.item]
+            cell.destination = self.filtered[indexPath.item]
         }
         
         return cell
@@ -191,11 +186,12 @@ extension ViewController : UICollectionViewDataSource
         let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let p = indexPath.item
         let detailVC = mainStoryBoard.instantiateViewController(withIdentifier: "VC2") as! DetailViewController
-        detailVC.destination = self.destinations[p]
+        detailVC.destination = self.filtered[p]
         detailVC.hero.isEnabled = true
         detailVC.hero.modalAnimationType = .selectBy(presenting: .zoom, dismissing: .zoomOut)
         
         present(detailVC, animated: true, completion: nil)
+        print("selected cell #", self.filtered[p])
         collectionView.reloadData()
     }
     
@@ -215,7 +211,7 @@ extension ViewController : UICollectionViewDataSource
         let indexOfFocusedCell = self.indexOfMajorCell()
         
         // Calculate Velocity and Swipe Settings
-        let swipeVelocityThreshold: CGFloat = 0.1
+        let swipeVelocityThreshold: CGFloat = 0.5
         let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.destinations.count && velocity.x > swipeVelocityThreshold
         let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
         let majorCellIsTheCellBeforeDragging = indexOfFocusedCell == indexOfCellBeforeDragging
@@ -224,26 +220,35 @@ extension ViewController : UICollectionViewDataSource
         // Paging snap and animation Settings
         if didUseSwipeToSkipCell {
             
-//            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            let snapToIndex = indexOfCellBeforeDragging
+            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
             let toValue = collectionViewLayout.itemSize.width * CGFloat(snapToIndex)
             
             // Animate spring and velocity of paging
-            UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
-                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
-                scrollView.layoutIfNeeded()
-            }, completion: nil)
-            
+//            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
+//                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
+//                scrollView.layoutIfNeeded()
+//            }, completion: nil)
+//
         } else {
             // Scroll to a cell item
             let indexPath = IndexPath(row: indexOfFocusedCell, section: 0)
-            if indexOfFocusedCell >= destinations.count - 1 {
-                print("disabled scrolling further")
-            } else if indexOfFocusedCell >= filtered.count - 1 {
-                print("filtering and disabled scrolling")
+            
+            if indexOfFocusedCell >= filtered.count - 1 {
+                print("disabled scrolling")
             } else {
                 collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             }
+            
+//            if indexOfFocusedCell >= filtered.count - 1 || indexOfFocusedCell < 0 {
+//                print("disabled scrolling further")
+//            }
+//            debugPrint("go further")
+//            if filtered.count != 0 && indexOfFocusedCell >= filtered.count - 1 {
+//                print("filtering and disabled scrolling")
+//            } else {
+//                collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//            }
         }
+ 
     }
 }
