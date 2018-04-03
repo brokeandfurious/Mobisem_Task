@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDelegate {
+class ViewController: UIViewController, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
     
     // MARK - Data Source
     private var destinations = Destination.createDestination()
@@ -20,9 +20,15 @@ class ViewController: UIViewController, UICollectionViewDelegate {
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var destinationCollectionView: UICollectionView!
     @IBOutlet weak var collectionViewLayout: UICollectionViewFlowLayout!
-    
+ 
     // Gradient Background
     let gradient = Values.shared.gradient
+    
+    // Search Bar Settings
+    var searchWrapperView = UIView()
+    var searchController = UISearchController(searchResultsController: nil)
+    var filtered = [Destination]()
+    var searchActive: Bool = false
     
     // MARK - ViewDidLoad
     override func viewDidLoad() {
@@ -30,14 +36,15 @@ class ViewController: UIViewController, UICollectionViewDelegate {
         
         // MARK - Configure Page Appearance
         setUpBackgroundGradient()
+        collectionView.isDirectionalLockEnabled = true
         collectionViewLayout.minimumLineSpacing = 20
         configureCollectionViewLayoutItemSize()
-        
     }
     
     override func viewDidLayoutSubviews() {
         // Fixes gradient issues on rotation.
         gradient.frame = view.bounds
+        applySearchView()
     }
     
     func setUpBackgroundGradient() {
@@ -73,6 +80,76 @@ class ViewController: UIViewController, UICollectionViewDelegate {
         return Int(round(proportionalOffset))
     }
     
+    // MARK - SEARCH STUFF
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        self.collectionView.reloadData()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filtered = destinations.filter({( destination: Destination ) -> Bool in
+            return destination.title.lowercased().contains(searchText.lowercased())
+        })
+    }
+    
+    func searchBarIsEmpty() -> Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+    private func applySearchView() {
+        self.searchController.searchResultsUpdater = self
+        self.searchController.delegate = self
+        self.searchController.searchBar.delegate = self
+        
+//        self.searchController.searchBar.showsCancelButton = false
+        self.searchController.hidesNavigationBarDuringPresentation = false
+        self.searchController.dimsBackgroundDuringPresentation = true
+        self.searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search Destinations"
+        searchController.searchBar.sizeToFit()
+        
+        definesPresentationContext = true
+//        searchController.searchBar.becomeFirstResponder()
+        
+        searchController.searchBar.searchBarStyle = .minimal
+        searchController.searchBar.tintColor = .clear
+        searchController.searchBar.barTintColor = .clear
+        
+        self.view.addSubview(searchWrapperView)
+//        searchWrapperView.backgroundColor = .clear
+        
+        searchWrapperView.arrangeConstraints(self.view.leftAnchor, leftConstant: 25,
+                                             right: self.view.rightAnchor, rightConstant: 75,
+                                             top: self.view.topAnchor, topConstant: 20,
+                                             width: self.view.widthAnchor, widthMultiplier: 0.7, widthConstant: 1,
+                                             height: self.view.heightAnchor, heightMultiplier: 0.08, heightConstant: 1)
+        
+        searchWrapperView.addSubview(searchController.searchBar)
+        searchController.searchBar.arrangeConstraints(searchWrapperView.leftAnchor, leftConstant: 0,
+                                             right: searchWrapperView.rightAnchor, rightConstant: 0,
+                                             top: searchWrapperView.topAnchor, topConstant: 0,
+                                             bottom: searchWrapperView.bottomAnchor, bottomConstant: 0,
+                                             width: searchWrapperView.widthAnchor, widthMultiplier: 1, widthConstant: 1,
+                                             height: searchWrapperView.heightAnchor, heightMultiplier: 1, heightConstant: 1,
+                                             centerX: searchWrapperView.centerXAnchor, centerY: searchWrapperView.centerYAnchor)
+        
+//        searchWrapperView.isUserInteractionEnabled = true
+//        searchController.searchBar.isUserInteractionEnabled = true
+
+    }
+    
 }
 
 // CollectionView data source
@@ -87,13 +164,26 @@ extension ViewController : UICollectionViewDataSource
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         pageControl.numberOfPages = destinations.count
-        return destinations.count
+        
+        if isFiltering() {
+            return filtered.count
+        } else {
+            return destinations.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DestinationCell", for: indexPath) as! DestinationCollectionViewCell
-        cell.destination = self.destinations[indexPath.item] 
+        cell.destination = self.destinations[indexPath.item]
+        
+        if isFiltering() {
+            cell.destination = filtered[indexPath.item]
+        } else {
+            cell.destination = destinations[indexPath.item]
+        }
+        
         return cell
     }
     
@@ -149,6 +239,8 @@ extension ViewController : UICollectionViewDataSource
             let indexPath = IndexPath(row: indexOfFocusedCell, section: 0)
             if indexOfFocusedCell >= destinations.count - 1 {
                 print("disabled scrolling further")
+            } else if indexOfFocusedCell >= filtered.count - 1 {
+                print("filtering and disabled scrolling")
             } else {
                 collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             }

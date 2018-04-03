@@ -9,7 +9,7 @@
 import UIKit
 import Hero
 
-class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate {
+class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate  {
         
     // MARK - Declarations and Outlets (Top Container)
     @IBOutlet weak var imageContainerView: UIView!
@@ -208,6 +208,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         iconGoogle.arrangeConstraints(wEqualToConstant: 16, hEqualToConstant: 16)
 
     }
+
 
     private func commonInit(){
         prepareViewComponent()
