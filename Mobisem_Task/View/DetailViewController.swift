@@ -38,11 +38,14 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
         
             // Container Shadows
         imageContainerView.clipsToBounds = false
+        imageContainerView?.layer.shouldRasterize = true
+        imageContainerView?.layer.rasterizationScale = UIScreen.main.scale
+        imageContainerView?.layer.shadowColor = Values.shared.shadowColor
         imageContainerView.layer.shadowColor = UIColor.black.cgColor
-        imageContainerView.layer.shadowOpacity = 1
-        imageContainerView.layer.shadowOffset = CGSize.zero
-        imageContainerView.layer.shadowRadius = 10
-        imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 10).cgPath
+        imageContainerView.layer.shadowOpacity = 0.5
+        imageContainerView.layer.shadowOffset = CGSize(width: -5, height: 10)
+        imageContainerView.layer.shadowRadius = 5
+//        imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 10).cgPath
         
             // Text Shadows
         cityLabel.textDropShadow()

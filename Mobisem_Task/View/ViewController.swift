@@ -43,6 +43,7 @@ class ViewController: UIViewController, UICollectionViewDelegate{
         super.viewDidLoad()
         
         // MARK - Configure Page Appearance
+        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         collectionView.isDirectionalLockEnabled = true
         collectionViewLayout.minimumLineSpacing = 20
         configureCollectionViewLayoutItemSize()
@@ -190,6 +191,8 @@ extension ViewController : UICollectionViewDataSource
         detailVC.hero.isEnabled = true
         detailVC.hero.modalAnimationType = .selectBy(presenting: .zoom, dismissing: .zoomOut)
         
+        
+        
         present(detailVC, animated: true, completion: nil)
         print("selected cell #", self.filtered[p])
         collectionView.reloadData()
@@ -211,9 +214,9 @@ extension ViewController : UICollectionViewDataSource
         let indexOfFocusedCell = self.indexOfMajorCell()
         
         // Calculate Velocity and Swipe Settings
-        let swipeVelocityThreshold: CGFloat = 0.5
+        let swipeVelocityThreshold: CGFloat = 25
         let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.destinations.count && velocity.x > swipeVelocityThreshold
-        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x < -swipeVelocityThreshold
+        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x > swipeVelocityThreshold
         let majorCellIsTheCellBeforeDragging = indexOfFocusedCell == indexOfCellBeforeDragging
         let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
         
@@ -223,18 +226,20 @@ extension ViewController : UICollectionViewDataSource
             let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
             let toValue = collectionViewLayout.itemSize.width * CGFloat(snapToIndex)
             
-            // Animate spring and velocity of paging
-//            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: velocity.x, options: .allowUserInteraction, animations: {
-//                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
-//                scrollView.layoutIfNeeded()
-//            }, completion: nil)
-//
+//             Animate spring and velocity of paging
+            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.x, options: [.allowUserInteraction, .preferredFramesPerSecond60, .curveEaseIn], animations: {
+                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
+                scrollView.layoutIfNeeded()
+            }, completion: nil)
+
         } else {
             // Scroll to a cell item
             let indexPath = IndexPath(row: indexOfFocusedCell, section: 0)
             
             if indexOfFocusedCell >= filtered.count - 1 {
                 print("disabled scrolling")
+            } else if favoritesTapped && indexOfFocusedCell >= favorites.count - 1 {
+                print("disabled scrolling between favorites")
             } else {
                 collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
             }
