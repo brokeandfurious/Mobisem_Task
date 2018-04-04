@@ -45,16 +45,14 @@ class ViewController: UIViewController, UICollectionViewDelegate{
         // MARK - Configure Page Appearance
         collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         collectionView.isDirectionalLockEnabled = true
-        collectionViewLayout.minimumLineSpacing = 20
-        configureCollectionViewLayoutItemSize()
+        collectionView.alwaysBounceHorizontal = false
+        collectionViewLayout.minimumLineSpacing = 7
+        collectionViewLayout.minimumInteritemSpacing = 7
+//        configureCollectionViewLayoutItemSize()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         searchBar.barStyle = .blackTranslucent
         setUpBackgroundGradient()
         pageControl.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
-        
-//         Dismiss keyboard
-//        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedOutsideKeyboard))
-//        collectionView!.addGestureRecognizer(tapGesture)
         
         // Initial boolean value for favorites
         favoritesTapped = false
@@ -67,10 +65,6 @@ class ViewController: UIViewController, UICollectionViewDelegate{
         gradient.frame = view.bounds
         self.collectionView.contentSize = CGSize.init(width: self.collectionView.contentSize.width, height: 0)
     }
-    
-//    @objc func tappedOutsideKeyboard(gesture: UITapGestureRecognizer) {
-//        searchBar.resignFirstResponder()
-//    }
     
     @IBAction func favoritesTapped(_ sender: Any) {
         if !favoritesTapped {
@@ -191,8 +185,6 @@ extension ViewController : UICollectionViewDataSource
         detailVC.hero.isEnabled = true
         detailVC.hero.modalAnimationType = .selectBy(presenting: .zoom, dismissing: .zoomOut)
         
-        
-        
         present(detailVC, animated: true, completion: nil)
         print("selected cell #", self.filtered[p])
         collectionView.reloadData()
@@ -206,6 +198,36 @@ extension ViewController : UICollectionViewDataSource
         pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width/1.5)
     }
     
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        
+        if let collectionView = collectionView {
+            
+            targetContentOffset.pointee = scrollView.contentOffset
+//            let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+            let pageWidth = self.view.frame.width + collectionViewLayout.minimumInteritemSpacing
+            var assistanceOffset : CGFloat = pageWidth / 3.0
+            
+            if velocity.x < 0 {
+                assistanceOffset = -assistanceOffset
+            }
+            
+            let assistedScrollPosition = (scrollView.contentOffset.x + assistanceOffset) / pageWidth + CGFloat(0.4)
+            var targetIndex = Int(round(assistedScrollPosition))
+            
+            if targetIndex < 0 {
+                targetIndex = 0
+            } else if targetIndex >= collectionView.numberOfItems(inSection: 0) {
+                targetIndex = collectionView.numberOfItems(inSection: 0) - 1
+            }
+            
+            print("targetIndex = \(targetIndex)")
+            let indexPath = IndexPath.init(row: targetIndex, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+            
+        }
+    }
+    
+    /*
     // MARK - Paging Settings
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
@@ -256,4 +278,5 @@ extension ViewController : UICollectionViewDataSource
         }
  
     }
+ */
 }

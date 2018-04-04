@@ -123,13 +123,13 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         // Headline Text
         headlineLabel.font = UIFont.boldSystemFont(ofSize: 19.0)
         headlineLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
-                                         top: circleProfileImage.bottomAnchor, topConstant: 20)
+                                         top: circleProfileImage.bottomAnchor, topConstant: 5)
 
         // Subtitle Text
         subtitleLabel.font = UIFont.italicSystemFont(ofSize: 14.0)
         subtitleLabel.textColor = UIColor.darkGray
         subtitleLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
-                                         top: headlineLabel.bottomAnchor, topConstant: 7)
+                                         top: headlineLabel.bottomAnchor, topConstant: 5)
 
         // Whole Text Label
         wholeTextLabel.font = UIFont.systemFont(ofSize: 14.0)

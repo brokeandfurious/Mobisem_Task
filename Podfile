@@ -7,5 +7,7 @@ target 'Mobisem_Task' do
 
   # Pods for Mobisem_Task
   pod "Hero"
+  pod "SideMenu"
+
 
 end
