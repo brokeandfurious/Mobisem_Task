@@ -24,6 +24,9 @@ class ViewController: UIViewController, UICollectionViewDelegate{
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var burgerMenu: UIButton!
     
+    // Test
+    
+    
     // Gradient Background
     let gradient = Values.shared.gradient
     

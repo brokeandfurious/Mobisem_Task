@@ -179,6 +179,7 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             headlineLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
             subtitleLabel.font = UIFont.italicSystemFont(ofSize: 11.0)
             wholeTextLabel.font = UIFont.systemFont(ofSize: 11.0)
+            checkInLabel.font = UIFont.systemFont(ofSize: 10.0)
             
             //Constraints
             profileNameLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 8)
@@ -197,6 +198,11 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
             wholeTextLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
                                               right: whiteView?.rightAnchor, rightConstant: 15,
                                               top: subtitleLabel.bottomAnchor, topConstant: 10)
+            
+            titleLabelView.font = .systemFont(ofSize: 21.0)
+            priceLabelView.font = .systemFont(ofSize: 18.0)
+            descriptionLabelView.font = .systemFont(ofSize: 11.0)
+            dateLabelView.font = .systemFont(ofSize: 11.0)
             
             sideTextLabel.updateConstraints()
             

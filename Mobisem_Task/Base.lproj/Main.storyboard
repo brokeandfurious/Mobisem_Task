@@ -54,7 +54,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="275" height="203.5"/>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81C-Bz-w5a">
-                                                            <rect key="frame" x="25" y="25" width="150" height="32.5"/>
+                                                            <rect key="frame" x="25" y="25" width="159" height="32.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="32.5" id="uEA-5R-94N"/>
                                                             </constraints>
@@ -63,7 +63,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wc3-oQ-Prg">
-                                                            <rect key="frame" x="25" y="65" width="150" height="29"/>
+                                                            <rect key="frame" x="25" y="62.5" width="150" height="29"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="29" id="6pm-vX-3mk"/>
                                                                 <constraint firstAttribute="width" constant="150" id="rI5-hd-s9n"/>
@@ -100,12 +100,8 @@
                                                             <state key="normal" title="Button" image="plane"/>
                                                         </button>
                                                         <view alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KSI-qn-sD6" userLabel="Checkin Button">
-                                                            <rect key="frame" x="179" y="158.5" width="75" height="30"/>
+                                                            <rect key="frame" x="204" y="152.5" width="50" height="36"/>
                                                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="75" id="0s9-Xe-Y3v"/>
-                                                                <constraint firstAttribute="height" constant="30" id="Mba-va-6tS"/>
-                                                            </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                                     <integer key="value" value="15"/>
@@ -116,21 +112,23 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="kqu-ZI-P38" firstAttribute="leading" secondItem="Afa-04-Vwu" secondAttribute="leading" id="2SY-xl-kAP"/>
-                                                        <constraint firstItem="x5M-xM-9Yg" firstAttribute="leading" secondItem="81C-Bz-w5a" secondAttribute="trailing" constant="29" id="3as-a9-TTQ"/>
+                                                        <constraint firstItem="x5M-xM-9Yg" firstAttribute="leading" secondItem="81C-Bz-w5a" secondAttribute="trailing" constant="20" id="3as-a9-TTQ"/>
                                                         <constraint firstAttribute="trailing" secondItem="kqu-ZI-P38" secondAttribute="trailing" id="4Iz-W4-St8"/>
                                                         <constraint firstAttribute="bottom" secondItem="Uul-bb-zes" secondAttribute="bottom" constant="15" id="FEL-fp-Cru"/>
                                                         <constraint firstItem="Uul-bb-zes" firstAttribute="top" secondItem="5Y0-hq-ohI" secondAttribute="bottom" constant="3" id="Foh-Dd-VcV"/>
+                                                        <constraint firstItem="KSI-qn-sD6" firstAttribute="width" secondItem="x5M-xM-9Yg" secondAttribute="width" id="Lkc-YQ-6oW"/>
                                                         <constraint firstItem="Uul-bb-zes" firstAttribute="leading" secondItem="Afa-04-Vwu" secondAttribute="leading" constant="25" id="MN9-XX-gMM"/>
                                                         <constraint firstItem="81C-Bz-w5a" firstAttribute="top" secondItem="Afa-04-Vwu" secondAttribute="top" constant="25" id="TXM-hK-zm4"/>
                                                         <constraint firstAttribute="trailing" secondItem="KSI-qn-sD6" secondAttribute="trailing" constant="21" id="ZNh-lO-C83"/>
                                                         <constraint firstAttribute="bottom" secondItem="KSI-qn-sD6" secondAttribute="bottom" constant="15" id="abf-7Y-wCa"/>
                                                         <constraint firstItem="wc3-oQ-Prg" firstAttribute="leading" secondItem="Afa-04-Vwu" secondAttribute="leading" constant="25" id="fZ2-V7-UHJ"/>
                                                         <constraint firstItem="5Y0-hq-ohI" firstAttribute="leading" secondItem="Afa-04-Vwu" secondAttribute="leading" constant="25" id="gcd-uZ-eMS"/>
+                                                        <constraint firstItem="KSI-qn-sD6" firstAttribute="top" secondItem="5Y0-hq-ohI" secondAttribute="top" id="hH3-UN-ESI"/>
                                                         <constraint firstItem="kqu-ZI-P38" firstAttribute="top" secondItem="Afa-04-Vwu" secondAttribute="top" id="hWA-MQ-7Tg"/>
                                                         <constraint firstItem="x5M-xM-9Yg" firstAttribute="top" secondItem="Afa-04-Vwu" secondAttribute="top" constant="30" id="hwe-w9-Djq"/>
                                                         <constraint firstAttribute="bottom" secondItem="kqu-ZI-P38" secondAttribute="bottom" id="jyr-Tu-Z7M"/>
                                                         <constraint firstItem="81C-Bz-w5a" firstAttribute="leading" secondItem="Afa-04-Vwu" secondAttribute="leading" constant="25" id="o2N-y5-vBI"/>
-                                                        <constraint firstItem="wc3-oQ-Prg" firstAttribute="top" secondItem="81C-Bz-w5a" secondAttribute="bottom" constant="7.5" id="ocQ-9e-Ckw"/>
+                                                        <constraint firstItem="wc3-oQ-Prg" firstAttribute="top" secondItem="81C-Bz-w5a" secondAttribute="bottom" constant="5" id="ocQ-9e-Ckw"/>
                                                         <constraint firstAttribute="trailing" secondItem="x5M-xM-9Yg" secondAttribute="trailing" constant="21" id="tdT-x6-qwb"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
@@ -311,7 +309,7 @@
                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ba6-RT-gv1">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ba6-RT-gv1">
                                         <rect key="frame" x="25" y="222" width="293" height="145"/>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="opT-sM-y3W" userLabel="ShareStackView">
