@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Hero
 
 class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDelegate  {
         
@@ -47,6 +46,8 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         commonInit()
         setConstraints()
         applyStackView()
+        
+        setConstraintsForSmallDevices()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -101,35 +102,47 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         // Profile Name
         profileNameLabel.font = UIFont.boldSystemFont(ofSize: 13.0)
         profileNameLabel.textColor = UIColor.black
+        profileNameLabel.adjustsFontSizeToFitWidth = true
         profileNameLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15, top: whiteView?.topAnchor, topConstant: 15)
 
         // Side Text
         sideTextLabel.text = "shared a comment."
         sideTextLabel.font = UIFont.systemFont(ofSize: 12.0)
         sideTextLabel.textColor = UIColor.gray
-        sideTextLabel.arrangeConstraints(profileNameLabel.rightAnchor, leftConstant: 7, top: whiteView?.topAnchor, topConstant: 15)
+        sideTextLabel.adjustsFontSizeToFitWidth = true
+        sideTextLabel.arrangeConstraints(profileNameLabel.rightAnchor, leftConstant: 5,
+//                                         right: whiteView?.rightAnchor, rightConstant: 10,
+//                                         top: whiteView?.topAnchor, topConstant: 15,
+                                         centerY: profileNameLabel.centerYAnchor)
 
         // Date and Time Text (This is just a string)
         commentTimeLabel.text = "07:00"
         commentTimeLabel.font = UIFont.boldSystemFont(ofSize: 12.0)
-        commentTimeLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15,top: profileNameLabel.bottomAnchor, topConstant: 5)
+        commentTimeLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 15,
+                                            top: profileNameLabel.bottomAnchor, topConstant: 5)
 
         commentDateLabel.text = "am  MARCH 26, 2018"
         commentDateLabel.font = UIFont.systemFont(ofSize: 12.0)
         commentDateLabel.textColor = UIColor.gray
+        commentDateLabel.adjustsFontSizeToFitWidth = true
         commentDateLabel.arrangeConstraints(commentTimeLabel.rightAnchor, leftConstant: 7,
-                                            top: sideTextLabel.bottomAnchor, topConstant: 7)
+//                                            right: whiteView?.rightAnchor, rightConstant: 10,
+//                                            top: sideTextLabel.bottomAnchor, topConstant: 7,
+                                            centerY: commentTimeLabel.centerYAnchor)
 
         // Headline Text
         headlineLabel.font = UIFont.boldSystemFont(ofSize: 19.0)
+        headlineLabel.adjustsFontSizeToFitWidth = true
         headlineLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
-                                         top: circleProfileImage.bottomAnchor, topConstant: 5)
+                                         right: whiteView?.rightAnchor, rightConstant: 10,
+                                         top: circleProfileImage.bottomAnchor, topConstant: 15)
 
         // Subtitle Text
         subtitleLabel.font = UIFont.italicSystemFont(ofSize: 14.0)
         subtitleLabel.textColor = UIColor.darkGray
         subtitleLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
-                                         top: headlineLabel.bottomAnchor, topConstant: 5)
+                                         right: whiteView?.rightAnchor, rightConstant: 10,
+                                         top: headlineLabel.bottomAnchor, topConstant: 10)
 
         // Whole Text Label
         wholeTextLabel.font = UIFont.systemFont(ofSize: 14.0)
@@ -137,17 +150,60 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         wholeTextLabel.lineBreakMode = .byWordWrapping
         wholeTextLabel.numberOfLines = 0
         wholeTextLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
-                                          right: whiteView?.rightAnchor, rightConstant: 10,
-                                          top: subtitleLabel.bottomAnchor, topConstant: 15)
+                                          right: whiteView?.rightAnchor, rightConstant: 15,
+                                          top: subtitleLabel.bottomAnchor, topConstant: 10,
+                                          width: whiteView?.widthAnchor, widthMultiplier: 1, widthConstant: -30)
+//                                          bottom: reviewImageView.topAnchor, bottomConstant: 15)
+        wholeTextLabel.heightAnchor.constraint(lessThanOrEqualTo: (whiteView?.heightAnchor)!, multiplier: 1.5).isActive = true
+        wholeTextLabel.adjustsFontSizeToFitWidth = true
+        wholeTextLabel.sizeToFit()
 
         // Review Image View
         reviewImageView.clipsToBounds = true
         reviewImageView.contentMode = .scaleAspectFill
         reviewImageView.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
                                            right: whiteView?.rightAnchor, rightConstant: 15,
-                                           top: wholeTextLabel.bottomAnchor, topConstant: 10,
-                                           width: whiteView?.widthAnchor, widthMultiplier: 1, widthConstant: -30,
-                                           hEqualToConstant: 80)
+                                           top: wholeTextLabel.bottomAnchor, topConstant: 15,
+                                           width: whiteView?.widthAnchor, widthMultiplier: 1, widthConstant: -30)
+        
+    }
+    
+    private func setConstraintsForSmallDevices() {
+        // Device Check
+        if DeviceType.IS_IPHONE_5 {
+            //Labels
+            profileNameLabel.font = UIFont.boldSystemFont(ofSize: 11.0)
+            sideTextLabel.font = UIFont.systemFont(ofSize: 9.0)
+            commentTimeLabel.font = UIFont.boldSystemFont(ofSize: 11.0)
+            commentDateLabel.font = UIFont.systemFont(ofSize: 9.0)
+            headlineLabel.font = UIFont.boldSystemFont(ofSize: 14.0)
+            subtitleLabel.font = UIFont.italicSystemFont(ofSize: 11.0)
+            wholeTextLabel.font = UIFont.systemFont(ofSize: 11.0)
+            
+            //Constraints
+            profileNameLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 8)
+            commentTimeLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 8)
+
+            sideTextLabel.arrangeConstraints(right: whiteView?.rightAnchor, rightConstant: 3,
+                                             centerY: profileNameLabel.centerYAnchor)
+            commentDateLabel.arrangeConstraints(circleProfileImage.rightAnchor, leftConstant: 48,
+                                                centerY: commentTimeLabel.centerYAnchor)
+            headlineLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
+                                             right: whiteView?.rightAnchor, rightConstant: 15,
+                                             top: circleProfileImage.bottomAnchor, topConstant: 10)
+            subtitleLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
+                                             right: whiteView?.rightAnchor, rightConstant: 15,
+                                             top: headlineLabel.bottomAnchor, topConstant: 5)
+            wholeTextLabel.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
+                                              right: whiteView?.rightAnchor, rightConstant: 15,
+                                              top: subtitleLabel.bottomAnchor, topConstant: 10)
+            
+            sideTextLabel.updateConstraints()
+            
+            // Shadow Fix
+            imageContainerView?.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 5).cgPath
+        
+        }
     }
     
     // MARK - Update UI elements with the correct data
@@ -188,14 +244,14 @@ class DestinationCollectionViewCell: UICollectionViewCell, UIGestureRecognizerDe
         
         whiteView?.addSubview(stackView)
 
-        stackView.addArrangedSubview(shareTextLabel) // NIL
+        stackView.addArrangedSubview(shareTextLabel)
         stackView.addArrangedSubview(iconFacebook)
         stackView.addArrangedSubview(iconTwitter)
         stackView.addArrangedSubview(iconInstagram)
         stackView.addArrangedSubview(iconTumblr)
         stackView.addArrangedSubview(iconGoogle)
         
-        stackView.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 20,
+        stackView.arrangeConstraints(whiteView?.leftAnchor, leftConstant: 15,
                                      right: whiteView?.rightAnchor, rightConstant: -15,
                                      top: reviewImageView.bottomAnchor, topConstant: 10,
                                      bottom: whiteView?.bottomAnchor, bottomConstant: 0,
@@ -284,5 +340,28 @@ extension UILabel {
     }
 }
 
+// Enum test for device types
 
+enum UIUserInterfaceIdiom : Int
+{
+    case Unspecified
+    case Phone
+    case Pad
+}
 
+struct ScreenSize
+{
+    static let SCREEN_WIDTH         = UIScreen.main.bounds.size.width
+    static let SCREEN_HEIGHT        = UIScreen.main.bounds.size.height
+    static let SCREEN_MAX_LENGTH    = max(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
+    static let SCREEN_MIN_LENGTH    = min(ScreenSize.SCREEN_WIDTH, ScreenSize.SCREEN_HEIGHT)
+}
+
+struct DeviceType
+{
+    static let IS_IPHONE_4_OR_LESS  = UIDevice.current.userInterfaceIdiom == .phone && ScreenSize.SCREEN_MAX_LENGTH < 568.0
+    static let IS_IPHONE_5          = UIDevice.current.userInterfaceIdiom == .phone && ScreenSize.SCREEN_MAX_LENGTH == 568.0
+    static let IS_IPHONE_6          = UIDevice.current.userInterfaceIdiom == .phone && ScreenSize.SCREEN_MAX_LENGTH == 667.0
+    static let IS_IPHONE_6P         = UIDevice.current.userInterfaceIdiom == .phone && ScreenSize.SCREEN_MAX_LENGTH == 736.0
+    static let IS_IPAD              = UIDevice.current.userInterfaceIdiom == .pad && ScreenSize.SCREEN_MAX_LENGTH == 1024.0
+}

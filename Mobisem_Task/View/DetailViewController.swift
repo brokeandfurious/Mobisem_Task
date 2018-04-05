@@ -43,9 +43,15 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
         imageContainerView?.layer.shadowColor = Values.shared.shadowColor
         imageContainerView.layer.shadowColor = UIColor.black.cgColor
         imageContainerView.layer.shadowOpacity = 0.5
-        imageContainerView.layer.shadowOffset = CGSize(width: -5, height: 10)
+        imageContainerView.layer.shadowOffset = CGSize(width: -5, height: 20)
         imageContainerView.layer.shadowRadius = 5
-//        imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 10).cgPath
+        imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 10).cgPath
+        
+        if DeviceType.IS_IPHONE_5 {
+            imageContainerView.layer.shadowPath = UIBezierPath(roundedRect: imageContainerView.bounds, cornerRadius: 3).cgPath
+            imageContainerView.layer.shadowOffset = CGSize(width: -5, height: -23)
+            imageContainerView.layer.shadowRadius = 5
+        }
         
             // Text Shadows
         cityLabel.textDropShadow()
@@ -58,6 +64,9 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
         if let destination = destination {
             imageView.image = destination.featuredImage
             cityLabel.text = destination.title.uppercased()
+            priceLabel.text = destination.price
+            descriptionLabel.text = destination.description
+            
             profileImageView.image = destination.profileImage
             profileNameLabel.text = destination.profileName
             headlineLabel.text = destination.headline
@@ -81,7 +90,7 @@ class DetailViewController: UIViewController, UINavigationControllerDelegate {
     
     // Dismiss View upon Swipe
     @objc func respondToSwipeGesture() {
-        hero_dismissViewController()
+        hero.dismissViewController()
     }
 
 }

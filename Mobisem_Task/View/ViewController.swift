@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Hero
 
 class ViewController: UIViewController, UICollectionViewDelegate{
     
@@ -30,7 +31,13 @@ class ViewController: UIViewController, UICollectionViewDelegate{
     var filtered = [Destination]()
     var favorites = [Destination]()
     var favoritesTapped = Bool()
+    var menuTapped = Bool()
     
+    // Top Menu
+    let topMenuView = UIView()
+    let xButton = UIButton()
+    
+    // Initialization
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.filtered.append(contentsOf: self.destinations)
@@ -38,25 +45,29 @@ class ViewController: UIViewController, UICollectionViewDelegate{
         self.favorites.append(self.destinations[4])
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.automaticallyAdjustsScrollViewInsets = false
+        collectionView.contentOffset = CGPoint(x: 0, y: 0)
+    }
+    
     // MARK - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpBackgroundGradient()
         
         // MARK - Configure Page Appearance
-        collectionView.decelerationRate = UIScrollViewDecelerationRateFast
         collectionView.isDirectionalLockEnabled = true
         collectionView.alwaysBounceHorizontal = false
-        collectionViewLayout.minimumLineSpacing = 7
-        collectionViewLayout.minimumInteritemSpacing = 7
-//        configureCollectionViewLayoutItemSize()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        searchBar.barStyle = .blackTranslucent
-        setUpBackgroundGradient()
         pageControl.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        searchBar.barStyle = .blackTranslucent
         
-        // Initial boolean value for favorites
+        // Initial boolean values
+        menuTapped = false
         favoritesTapped = false
         
+        xButton.addTarget(self, action: #selector(self.xButtonTapped), for: .touchUpInside)
+
     }
     
     override func viewDidLayoutSubviews() {
@@ -66,13 +77,147 @@ class ViewController: UIViewController, UICollectionViewDelegate{
         self.collectionView.contentSize = CGSize.init(width: self.collectionView.contentSize.width, height: 0)
     }
     
-    @IBAction func favoritesTapped(_ sender: Any) {
-        if !favoritesTapped {
-            favoritesTapped = true
-        } else {
-            favoritesTapped = false
+    @IBAction func menuTapped(_ sender: Any) {
+
+        self.arrangeTopMenu()
+        
+        // Animation test
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.9,
+            initialSpringVelocity: 0.9,
+            options: UIViewAnimationOptions(),
+            animations: {
+                self.collectionViewLayout.invalidateLayout()
+                self.collectionView.performBatchUpdates(nil, completion: nil)
+                self.collectionView.layoutIfNeeded()
+                
+                self.burgerMenu.alpha = 0
+                self.searchBar.alpha = 0
+
+                let moveDown = CGAffineTransform(translationX: 0, y: 150)
+                let shrinkDown = CGAffineTransform(scaleX: 1.25, y: 1.25).translatedBy(x: 0, y: self.view.frame.height/2.5)
+                
+                self.topMenuView.transform = moveDown
+                self.collectionView.transform = shrinkDown
+                
+        },
+            completion: { (_) -> Void in
+                self.menuTapped = true
+                self.arrangeMenuItems()
+        })
+    }
+    
+    @objc func xButtonTapped() {
+        // Animation test
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0,
+            usingSpringWithDamping: 0.9,
+            initialSpringVelocity: 0.9,
+            options: UIViewAnimationOptions(),
+            animations: {
+                self.collectionViewLayout.invalidateLayout()
+                self.collectionView.performBatchUpdates(nil, completion: nil)
+                self.collectionView.layoutIfNeeded()
+                
+                let moveDown = CGAffineTransform(translationX: 0, y: -250)
+                let shrinkDown = CGAffineTransform(scaleX: 1, y: 1).translatedBy(x: 0, y: 0)
+                
+                self.topMenuView.transform = moveDown
+                self.collectionView.transform = shrinkDown
+                self.burgerMenu.alpha = 1
+                self.searchBar.alpha = 1
+                
+        },
+            completion: { (_) -> Void in
+                self.menuTapped = false
+        })
+        
+    }
+    
+    func arrangeTopMenu() {
+        self.view.addSubview(topMenuView)
+        topMenuView.backgroundColor = .darkGray
+        topMenuView.alpha = 0.8
+        topMenuView.isOpaque = false
+        topMenuView.arrangeConstraints(self.view.leftAnchor, leftConstant: 0,
+                                       right: self.view.rightAnchor, rightConstant: 0,
+                                       top: self.view.topAnchor, topConstant: -150,
+                                       width: self.view.widthAnchor, widthMultiplier: 1, widthConstant: 1,
+                                       hEqualToConstant: self.view.frame.size.height/2)
+        
+        // X Button
+        xButton.setTitle("X", for: .normal)
+        xButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+        topMenuView.addSubview(xButton)
+        xButton.arrangeConstraints(self.topMenuView.leftAnchor, leftConstant: 10,
+                                   top: self.topMenuView.topAnchor, topConstant: 20,
+                                   wEqualToConstant: 40, hEqualToConstant: 40)
+    }
+    
+    func arrangeMenuItems() {
+        let homeButton = UIButton()
+        let profileButton = UIButton()
+        let favoritesButton = UIButton()
+        let pastTripsButton = UIButton()
+        let supportButton = UIButton()
+        
+        self.topMenuView.addSubview(homeButton)
+        self.topMenuView.addSubview(profileButton)
+        self.topMenuView.addSubview(favoritesButton)
+        self.topMenuView.addSubview(pastTripsButton)
+        self.topMenuView.addSubview(supportButton)
+        
+        homeButton.arrangeConstraints(top: self.topMenuView.topAnchor, topConstant: 73,
+                                     centerX: self.topMenuView.centerXAnchor)
+        profileButton.arrangeConstraints(top: homeButton.bottomAnchor, topConstant: 7,
+                                      centerX: self.topMenuView.centerXAnchor)
+        favoritesButton.arrangeConstraints(top: profileButton.bottomAnchor, topConstant: 7,
+                                      centerX: self.topMenuView.centerXAnchor)
+        pastTripsButton.arrangeConstraints(top: favoritesButton.bottomAnchor, topConstant: 7,
+                                      centerX: self.topMenuView.centerXAnchor)
+        supportButton.arrangeConstraints(top: pastTripsButton.bottomAnchor, topConstant: 7,
+                                           centerX: self.topMenuView.centerXAnchor)
+        
+        // Button Config
+        homeButton.setTitle("Home".uppercased(), for: .normal)
+        homeButton.setTitleColor(.white, for: .normal)
+        homeButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25.0)
+        homeButton.alpha = 0
+        profileButton.setTitle("Profile".uppercased(), for: .normal)
+        profileButton.setTitleColor(.white, for: .normal)
+        profileButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25.0)
+        profileButton.alpha = 0
+        favoritesButton.setTitle("Favorites".uppercased(), for: .normal)
+        favoritesButton.setTitleColor(.white, for: .normal)
+        favoritesButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25.0)
+        favoritesButton.alpha = 0
+        pastTripsButton.setTitle("Past Trips".uppercased(), for: .normal)
+        pastTripsButton.setTitleColor(.white, for: .normal)
+        pastTripsButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25.0)
+        pastTripsButton.alpha = 0
+        supportButton.setTitle("Support".uppercased(), for: .normal)
+        supportButton.setTitleColor(.white, for: .normal)
+        supportButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 25.0)
+        supportButton.alpha = 0
+        
+        if DeviceType.IS_IPHONE_5 {
+            homeButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
+            profileButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
+            favoritesButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
+            pastTripsButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
+            supportButton.titleLabel?.font = .boldSystemFont(ofSize: 15)
         }
-        collectionView.reloadData()
+        
+        UIView.animate(withDuration: 0.8) {
+            homeButton.alpha = 1
+            profileButton.alpha = 1
+            favoritesButton.alpha = 1
+            pastTripsButton.alpha = 1
+            supportButton.alpha = 1
+        }
     }
     
     func setUpBackgroundGradient() {
@@ -83,33 +228,18 @@ class ViewController: UIViewController, UICollectionViewDelegate{
         view.layer.insertSublayer(gradient, at: 0)
     }
     
-    // MARK - CollectionView Paging Settings
-        // Calculate Section Insets
-    private func calculateSectionInset() -> CGFloat {
-        let deviceIsIpad = UIDevice.current.userInterfaceIdiom == .pad
-        let deviceOrientationIsLandscape = UIDevice.current.orientation.isLandscape
-        let cellBodyViewIsExpended = deviceIsIpad || deviceOrientationIsLandscape
-        let cellBodyWidth: CGFloat = 236 + (cellBodyViewIsExpended ? 174 : 0)
-        let buttonWidth: CGFloat = 50
-        let inset = (collectionViewLayout.collectionView!.frame.width - cellBodyWidth + buttonWidth) / 4
-        return inset
-    }
-        // Calculate Item Size
-    private func configureCollectionViewLayoutItemSize() {
-        let inset: CGFloat = calculateSectionInset()
-        collectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: inset, bottom: 0, right: inset)
-        collectionViewLayout.itemSize = CGSize(width: collectionViewLayout.collectionView!.frame.size.width - inset * 2, height: collectionViewLayout.collectionView!.frame.size.height)
-        collectionViewLayout.collectionView!.reloadData()
-    }
-        // Calculate Offset
-    private func indexOfMajorCell() -> Int {
-        let itemWidth = collectionViewLayout.itemSize.width
-        let proportionalOffset = collectionViewLayout.collectionView!.contentOffset.x / itemWidth
-        return Int(round(proportionalOffset))
+    func favoritesButtonTapped() {
+        if !favoritesTapped {
+            favoritesTapped = false
+        } else {
+            favoritesTapped = false
+        }
+        collectionView.reloadData()
     }
 
 }
 
+// MARK - SearchBar Configuration
 extension ViewController : UISearchBarDelegate {
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -142,7 +272,7 @@ extension ViewController : UISearchBarDelegate {
     }
 }
 
-// CollectionView data source
+// MARK - CollectionView Configuration
 extension ViewController : UICollectionViewDataSource
 {
     private struct Storyboard {
@@ -190,28 +320,32 @@ extension ViewController : UICollectionViewDataSource
         collectionView.reloadData()
     }
     
+}
+
+extension ViewController: UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width/1.5)
     }
-
+    
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         pageControl?.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width/1.5)
     }
+    
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         
         if let collectionView = collectionView {
             
             targetContentOffset.pointee = scrollView.contentOffset
-//            let flowLayout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-            let pageWidth = self.view.frame.width + collectionViewLayout.minimumInteritemSpacing
+            let pageWidth = self.itemSize(for: collectionView).width
             var assistanceOffset : CGFloat = pageWidth / 3.0
             
             if velocity.x < 0 {
                 assistanceOffset = -assistanceOffset
             }
             
-            let assistedScrollPosition = (scrollView.contentOffset.x + assistanceOffset) / pageWidth + CGFloat(0.4)
+            let assistedScrollPosition = (scrollView.contentOffset.x + assistanceOffset) / pageWidth
             var targetIndex = Int(round(assistedScrollPosition))
             
             if targetIndex < 0 {
@@ -223,60 +357,22 @@ extension ViewController : UICollectionViewDataSource
             print("targetIndex = \(targetIndex)")
             let indexPath = IndexPath.init(row: targetIndex, section: 0)
             collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            
         }
     }
     
-    /*
-    // MARK - Paging Settings
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        
-        // Stop sliding and calculate cell paging
-        targetContentOffset.pointee = scrollView.contentOffset
-        let indexOfFocusedCell = self.indexOfMajorCell()
-        
-        // Calculate Velocity and Swipe Settings
-        let swipeVelocityThreshold: CGFloat = 25
-        let hasEnoughVelocityToSlideToTheNextCell = indexOfCellBeforeDragging + 1 < self.destinations.count && velocity.x > swipeVelocityThreshold
-        let hasEnoughVelocityToSlideToThePreviousCell = indexOfCellBeforeDragging - 1 >= 0 && velocity.x > swipeVelocityThreshold
-        let majorCellIsTheCellBeforeDragging = indexOfFocusedCell == indexOfCellBeforeDragging
-        let didUseSwipeToSkipCell = majorCellIsTheCellBeforeDragging && (hasEnoughVelocityToSlideToTheNextCell || hasEnoughVelocityToSlideToThePreviousCell)
-        
-        // Paging snap and animation Settings
-        if didUseSwipeToSkipCell {
-            
-            let snapToIndex = indexOfCellBeforeDragging + (hasEnoughVelocityToSlideToTheNextCell ? 1 : -1)
-            let toValue = collectionViewLayout.itemSize.width * CGFloat(snapToIndex)
-            
-//             Animate spring and velocity of paging
-            UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: velocity.x, options: [.allowUserInteraction, .preferredFramesPerSecond60, .curveEaseIn], animations: {
-                scrollView.contentOffset = CGPoint(x: toValue, y: 0)
-                scrollView.layoutIfNeeded()
-            }, completion: nil)
-
-        } else {
-            // Scroll to a cell item
-            let indexPath = IndexPath(row: indexOfFocusedCell, section: 0)
-            
-            if indexOfFocusedCell >= filtered.count - 1 {
-                print("disabled scrolling")
-            } else if favoritesTapped && indexOfFocusedCell >= favorites.count - 1 {
-                print("disabled scrolling between favorites")
-            } else {
-                collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            }
-            
-//            if indexOfFocusedCell >= filtered.count - 1 || indexOfFocusedCell < 0 {
-//                print("disabled scrolling further")
-//            }
-//            debugPrint("go further")
-//            if filtered.count != 0 && indexOfFocusedCell >= filtered.count - 1 {
-//                print("filtering and disabled scrolling")
-//            } else {
-//                collectionViewLayout.collectionView!.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-//            }
-        }
- 
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return self.itemSize(for: collectionView)
     }
- */
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return collectionView.bounds.width*0.05
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return collectionView.bounds.width*0.05
+    }
+    
+    private func itemSize(for collectionView:UICollectionView) -> CGSize {
+        return CGSize.init(width: collectionView.bounds.width*0.7, height: collectionView.bounds.height*0.9)
+    }
 }
